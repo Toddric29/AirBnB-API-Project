@@ -29,7 +29,9 @@ const validateLogin = [
         where: {
           [Op.or]: {
             username: credential,
-            email: credential
+            email: credential,
+            firstName: credential,
+            lastName: credential
           }
         }
       });
@@ -46,6 +48,8 @@ const validateLogin = [
         id: user.id,
         email: user.email,
         username: user.username,
+        firstName: user.firstName,
+        lastName: user.lastName
       };
 
       await setTokenCookie(res, safeUser);
