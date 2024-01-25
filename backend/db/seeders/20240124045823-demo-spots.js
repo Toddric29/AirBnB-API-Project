@@ -14,7 +14,7 @@ const spots = [
     city: 'Utopia',
     state: 'Kansas',
     country: 'USA',
-    lat: 111,
+    lat: 90,
     lng: -23,
     name: 'Maj',
     description: 'A place to jam',
@@ -25,7 +25,7 @@ const spots = [
     city: 'Memphis',
     state: 'TN',
     country: 'USA',
-    lat: 324,
+    lat: 91,
     lng: -20,
     name: 'Emoh',
     description: 'A place you can call home',
@@ -46,7 +46,13 @@ const spots = [
 
 module.exports = {
   async up (queryInterface, Sequelize) {
-    await Spot.bulkCreate(spots, { validate: true });
+    try {
+      // Bulkcreate here
+      await Spot.bulkCreate(spots, { validate: true });
+   } catch (err) {
+      console.log(err)
+   }
+
   },
 
   async down (queryInterface, Sequelize) {
