@@ -33,16 +33,16 @@ module.exports = (sequelize, DataTypes) => {
           key: 'id'
       }
     },
-    startDate: {
-      type: DataTypes.DATE,
-      allowNull: false,
-        // defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
-      },
-    endDate: {
-      type: DataTypes.DATE,
-      allowNull: false,
-        // defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
-      },
+    // startDate: {
+    //   type: DataTypes.DATE,
+    //   allowNull: false,
+    //     defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
+    //   },
+    // endDate: {
+    //   type: DataTypes.DATE,
+    //   allowNull: false,
+    //     // defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
+    //   },
   }, {
     sequelize,
     modelName: 'Booking',
