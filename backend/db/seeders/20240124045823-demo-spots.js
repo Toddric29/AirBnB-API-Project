@@ -1,6 +1,6 @@
 'use strict';
 
-const { Spot } = require('../models');
+const { Spot, User } = require('../models');
 const bcrypt = require("bcryptjs");
 
 let options = {};
@@ -10,6 +10,7 @@ if (process.env.NODE_ENV === 'production') {
 
 const spots = [
   {
+    email: 'demo@user.io',
     address: '9786 Twinlake Ave',
     city: 'Utopia',
     state: 'Kansas',
@@ -21,6 +22,7 @@ const spots = [
     price: 123
   },
   {
+    email: 'user1@user.io',
     address: '3256 Auckland Blvd',
     city: 'Memphis',
     state: 'TN',
@@ -32,7 +34,20 @@ const spots = [
     price: 323
   },
   {
+    email: 'user2@user.io',
     address: '7845 Red St',
+    city: 'Compton',
+    state: 'CA',
+    country: 'USA',
+    lat: 65,
+    lng: -3,
+    name: 'Bunker',
+    description: 'Somewhere you"ll feel safe',
+    price: 400
+  },
+  {
+    email: 'user2@user.io',
+    address: '7850 Red St',
     city: 'Compton',
     state: 'CA',
     country: 'USA',
@@ -48,7 +63,20 @@ module.exports = {
   async up (queryInterface, Sequelize) {
     try {
       // Bulkcreate here
-      await Spot.bulkCreate(spots, { validate: true });
+      for (let spot of spots) {
+        // console.log(spot)
+        let emails = spot.email
+        delete spot.email
+        // console.log(spot)
+        const user = await User.findOne({
+          where: {
+            email: emails
+          }
+        })
+        spot.ownerId = user.id
+        // console.log(spot)
+        await Spot.create(spot)
+      }
    } catch (err) {
       console.log(err)
    }

@@ -13,6 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Booking.belongsTo(models.User);
       Booking.belongsTo(models.Spot);
+
     }
   }
   Booking.init({
