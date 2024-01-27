@@ -18,8 +18,8 @@ const bookings = [
     address: '7845 Red St'
   },
   {
-    email: 'user2@user.io',
-    address: '7850 Red St'
+    email: 'demo@user.io',
+    address: '9786 Twinlake Ave'
   }
 ]
 
