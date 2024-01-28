@@ -11,15 +11,21 @@ if (process.env.NODE_ENV === 'production') {
 const bookings = [
   {
     email: 'user1@user.io',
-    address: '3256 Auckland Blvd'
+    address: '3256 Auckland Blvd',
+    startDate: new Date(),
+    endDate: new Date().setDate(new Date().getDate() + 5)
   },
   {
     email: 'user2@user.io',
-    address: '7845 Red St'
+    address: '7845 Red St',
+    startDate: new Date().setDate(new Date().getDate() + 1),
+    endDate: new Date().setDate(new Date().getDate() + 6)
   },
   {
     email: 'demo@user.io',
-    address: '9786 Twinlake Ave'
+    address: '9786 Twinlake Ave',
+    startDate: new Date().setDate(new Date().getDate() + 2),
+    endDate: new Date().setDate(new Date().getDate() + 7)
   }
 ]
 
