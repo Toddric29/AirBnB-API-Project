@@ -22,7 +22,7 @@ const spotImages = [
   {
     url: 'airbnb.co/134',
     preview: true,
-    address: '7850 Red St'
+    address: '9786 Twinlake Ave'
   }
 ]
 
