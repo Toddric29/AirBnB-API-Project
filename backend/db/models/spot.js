@@ -81,6 +81,15 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Spot',
+    scopes: {
+      authorization(id){
+      return {
+        where: {
+          ownerId: id
+        }
+      }
+    }
+  }
   });
   return Spot;
 };

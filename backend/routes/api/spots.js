@@ -19,7 +19,24 @@ router.get('/', async (req, res, next) => {
         }],
         group: [['Spot.id','ASC']]
     })
-    res.json({Spots: spots});
+    spots = spots.map(spot => {
+        const jsonSpot = spot.toJSON();
+        if (jsonSpot.Reviews[0]) {
+          jsonSpot.avgRating = jsonSpot.Reviews[0].avgRating;
+        } else {
+          jsonSpot.avgRating = null;
+        }
+        delete jsonSpot.Reviews
+        if (jsonSpot.SpotImages[0]) {
+            jsonSpot.previewImage = jsonSpot.SpotImages[0].previewImage;
+          } else {
+            jsonSpot.previewImage = null;
+          }
+          delete jsonSpot.Reviews
+          delete jsonSpot.SpotImages
+        return jsonSpot;
+      });
+      res.json({Spots: spots});
 })
 router.get('/current',requireAuth, async (req, res, next) => {
     let spot;
@@ -55,5 +72,36 @@ router.post('/', requireAuth, async (req, res, next) => {
     catch(e) {
         delete e.stack
         next(e)}
+})
+router.post('/:spotId/images', requireAuth, async (req, res, next) => {
+    const spot = await Spot.findByPk(req.params.spotId);
+    const image = (await spot.createSpotImage(req.body)).toJSON()
+    const {id, url, preview } = image
+    res.json({
+        id,
+        url,
+        preview
+    })
+})
+router.put('/:spotId', requireAuth, async (req, res, next) => {
+    let updatedSpot;
+    updatedSpot = await Spot.findByPk(req.params.spotId)
+    updatedSpot.update(req.body)
+    res.json(updatedSpot)
+})
+router.delete('/:spotId', requireAuth, async (req, res, next) => {
+    const results = await Spot.scope({method: ['authorization',req.user.id]}).destroy({
+        where: {
+            id: req.params.spotId
+        }
+    })
+    if (results) {
+        return res.json({
+            "message": "Successfully deleted"
+          })
+    }
+    res.status(404).json({
+        "message": "Spot couldn't be found"
+      })
 })
 module.exports = router;
