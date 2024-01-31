@@ -60,15 +60,31 @@ module.exports = (sequelize, DataTypes) => {
   },
     lat: {
       type: DataTypes.DECIMAL,
-    allowNull: false
+    allowNull: false,
+  //   validate: {
+  //     min: {
+  //       args: -90,
+  //       msg: "Latitude is not valid" },
+  //     max: {
+  //       args: 90,
+  //       msg: "Latitude is not valid" },
+  // }
   },
     lng: {
       type: DataTypes.DECIMAL,
-    allowNull: false
+    allowNull: false,
+    // validate: {
+    //     min: {
+    //       args: -180,
+    //       msg: "Longitude is not valid" },
+    //     max: {
+    //       args: 180,
+    //       msg: "Longitude is not valid" },
+    // }
   },
     name: {
       type: DataTypes.STRING,
-    allowNull: false
+    allowNull: false,
   },
     description: {
       type: DataTypes.STRING,

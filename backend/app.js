@@ -55,6 +55,7 @@ if (!isProduction) {
       }
       err.title = 'Validation error';
       err.errors = errors;
+      //  delete err.stack;
     }
     next(err);
   });
