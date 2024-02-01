@@ -16,6 +16,10 @@ module.exports = (sequelize, DataTypes) => {
       Review.hasMany(models.ReviewImage, {
         foreignKey: 'reviewId'
       });
+      // Review.belongsToMany(models.SpotImage, {
+      //   through: models.Spot,
+      //   foreignKey: "id"
+      // });
     }
   }
   Review.init({
@@ -46,6 +50,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Review',
-  });
+  },
+  );
   return Review;
 };

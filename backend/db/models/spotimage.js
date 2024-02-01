@@ -12,6 +12,10 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       SpotImage.belongsTo(models.Spot)
+      // SpotImage.belongsToMany(models.Review, {
+      //   through: models.Spot,
+      //   foreignKey: "id"
+      // });
     }
   }
   SpotImage.init({

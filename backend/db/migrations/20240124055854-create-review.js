@@ -29,7 +29,7 @@ module.exports = {
       },
       review: {
         type: Sequelize.STRING,
-        unique: true
+        // unique: true
       },
       stars: {
         type: Sequelize.INTEGER
@@ -44,7 +44,13 @@ module.exports = {
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
       }
-    });
+    }
+    ,{ uniqueKeys: {
+      'user-spot': {
+        fields: ['UserId', 'SpotId']
+      }}
+    }
+    );
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('Reviews');
