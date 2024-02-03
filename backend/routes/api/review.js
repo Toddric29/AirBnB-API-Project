@@ -59,6 +59,11 @@ router.post('/:reviewId/images', requireAuth, async (req, res, next) => {
     if (!review) return res.status(404).json({
         "message": "Review couldn't be found"
       })
+      if (review.userId !== req.user.id) {
+        return res.status(404).json({
+          message: 'You do not have authorization to modify this review'
+        })
+    }
     const count = await review.countReviewImages();
     if (count > 9 ) {
         return res.status(403).json({
@@ -79,23 +84,31 @@ router.put('/:reviewId', requireAuth, validateReview, async (req, res, next) => 
     if (updatedReview === null) return res.status(404).json({
         "message": "Review couldn't be found"
       })
+      if (updatedReview.userId !== req.user.id) {
+        return res.status(404).json({
+          message: 'You do not have authorization to modify this review'
+        })
+    }
     updatedReview.update(req.body)
     res.json(updatedReview)
 });
 
 router.delete('/:reviewId', requireAuth, async (req, res, next) => {
-    const results = await Spot.scope({method: ['authorization',req.user.id]}).destroy({
-        where: {
-            id: req.params.reviewId
-        }
-    })
-    if (results) {
+    let deletedReview;
+    deletedReview = await Review.findByPk(req.params.reviewId)
+    if (!deletedReview) return res.status(404).json({
+        "message": "Review couldn't be found"
+      })
+    if (deletedReview.userId !== req.user.id) {
+        return res.status(404).json({
+          message: 'You do not have authorization to delete this review'
+        })
+    }
+    if (deletedReview) {
+        deletedReview.destroy()
         return res.json({
             "message": "Successfully deleted"
           })
     }
-    res.status(404).json({
-        "message": "Spot couldn't be found"
-      })
 })
 module.exports = router;

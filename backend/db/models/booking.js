@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
   Booking.init({
     userId: {
       type: DataTypes.INTEGER,
-      allowNull: true,
+      allowNull: false,
       references: {
           model: 'Users',
           key: 'id'
@@ -27,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     spotId: {
       type: DataTypes.INTEGER,
-      allowNull: true,
+      allowNull: false,
       references: {
           model: 'Spots',
           key: 'id'

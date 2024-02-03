@@ -70,15 +70,17 @@ router.put('/:bookingId', requireAuth, async (req, res, next) => {
             message: "Past bookings can't be modified"
         })
     }
-    const conflictBooking = await Booking.findOne({
+    const conflictBooking = await Booking.findAll({
         where: {
             spotId: updatedBooking.spotId,
+
             [Op.or]: [{startDate:{[Op.between]:[req.body.startDate,req.body.endDate]}},
             {endDate:{[Op.between]:[req.body.startDate,req.body.endDate]}}]
         },
-        limit: 1
+        limit: 2
     });
-    if (conflictBooking) {
+
+    if (conflictBooking.length > 1) {
         return res.status(403).json({
             message: "Sorry, this spot is already booked for the specified dates",
             errors: {
@@ -123,15 +125,16 @@ router.delete('/:bookingId', requireAuth, async (req, res, next) => {
             model: Spot
         }
     })
-    if (new Date() > deletedBooking.startDate) {
-        return res.status(403).json({
-            message: "Bookings that have been started can't be deleted"
-        })
-    }
+
     if (deletedBooking === null) {
         return res.status(404).json({
             "message": "Spot couldn't be found"
           })
+    }
+    if (new Date() > deletedBooking.startDate) {
+        return res.status(403).json({
+            message: "Bookings that have been started can't be deleted"
+        })
     }
     if (deletedBooking.userId === req.user.id || deletedBooking.Spot.ownerId === req.user.id) {
         await deletedBooking.destroy()
