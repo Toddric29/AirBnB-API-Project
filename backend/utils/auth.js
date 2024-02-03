@@ -40,7 +40,6 @@ const setTokenCookie = (res, user) => {
       if (err) {
         return next();
       }
-
       try {
         const { id } = jwtPayload.data;
         req.user = await User.findByPk(id, {

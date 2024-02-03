@@ -5,6 +5,21 @@ module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     static associate(models) {
       // define association here
+      User.hasMany(models.Spot, {
+        foreignKey: 'ownerId'
+      });
+      User.belongsToMany(models.Spot, {
+        through: models.Booking,
+        foreignKey: {
+          name: 'spotId'
+        }
+      });
+      User.hasMany(models.Review, {
+        foreignKey: 'userId'
+      });
+      User.hasMany(models.Booking, {
+        foreignKey: 'userId'
+      });
     }
   };
 
@@ -58,7 +73,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING.BINARY,
         allowNull: false,
         validate: {
-          len: [60, 60]
+          len: [6, 60]
         }
       }
     },
