@@ -84,7 +84,8 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-    await queryInterface.bulkDelete('Spots', {
+    options.tableName = 'Spots';
+    return queryInterface.bulkDelete(options, {
       address: spots.map(spot => spot.address)
     }, {});
   }
