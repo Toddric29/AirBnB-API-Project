@@ -300,7 +300,7 @@ router.get('/:spotId', async (req, res, next) => {
         }],
         group: [['Spot.id'],['Reviews.id'],['Owner.id'],['SpotImages.id']]
     })
-    if (spotDetail.id === null) return res.status(404).json({
+    if (spotDetail === null) return res.status(404).json({
         "message": "Spot couldn't be found"
       });
         const jsonSpot = spotDetail.toJSON();
