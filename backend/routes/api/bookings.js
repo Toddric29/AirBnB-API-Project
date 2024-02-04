@@ -66,7 +66,7 @@ router.put('/:bookingId', requireAuth, async (req, res, next) => {
     }
     if (req.user.id !== updatedBooking.userId) {
         return res.status(403).json({
-            message: "You don't have the authorization to modify this booking"
+            message: "Forbidden"
         })
     }
     if (updatedBooking.endDate < new Date()) {
