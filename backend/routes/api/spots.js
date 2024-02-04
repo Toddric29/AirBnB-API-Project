@@ -206,7 +206,7 @@ router.get('/', async (req, res, next) => {
             subQuery: false,
             attributes: [['url', 'previewImage']],
         }],
-        group: [['Spot.id'],['SpotImages.id']],
+        group: [['Spot.id'],['SpotImages.id'],['Reviews.id']],
         ...pagination
     })
     if (filteredSpots[0].id === null) {
