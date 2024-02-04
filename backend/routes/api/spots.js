@@ -254,7 +254,7 @@ router.get('/current',requireAuth, async (req, res, next) => {
             required: false,
             attributes: [['url', 'previewImage']],
         }],
-        group: [['Spot.id'], ['Review.id']]
+        group: [['Spot.id'], ['Reviews.id']]
     })
     userSpot = userSpot.map(spot => {
         const jsonSpot = spot.toJSON();
