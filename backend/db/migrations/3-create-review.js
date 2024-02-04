@@ -51,7 +51,7 @@ module.exports = {
     }
     ,{ uniqueKeys: {
       'user-spot': {
-        fields: ['UserId', 'SpotId']
+        fields: ['userId', 'spotId']
       }}
     },
     options);
