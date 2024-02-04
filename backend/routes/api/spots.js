@@ -106,6 +106,7 @@ router.get('/', async (req, res, next) => {
         {
             model: SpotImage,
             required: false,
+            subQuery: false,
             attributes: [['url', 'previewImage']],
         }],
         group: [['Spot.id','ASC'],['Reviews.id'],['SpotImages.id']]
@@ -201,6 +202,7 @@ router.get('/', async (req, res, next) => {
         {
             model: SpotImage,
             required: false,
+            subQuery: false,
             attributes: [['url', 'previewImage']],
         }],
         group: [['Spot.id'],['SpotImages.id']],
