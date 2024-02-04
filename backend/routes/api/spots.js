@@ -243,11 +243,10 @@ router.get('/current',requireAuth, async (req, res, next) => {
         where: {
             ownerId: req.user.id
         },
-        subQuery: false,
         include: [{
             model: Review,
-            required: false,
             subQuery: false,
+            required: false,
             attributes: [[Sequelize.fn('AVG', Sequelize.col('stars')),'avgRating']],
         },
         {
