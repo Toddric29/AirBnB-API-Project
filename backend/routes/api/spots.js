@@ -193,6 +193,7 @@ router.get('/', async (req, res, next) => {
     }
 
     filteredSpots = await Spot.findAll({
+      subQuery: false,
       where: where,
         include: [{
             model: Review,
@@ -242,6 +243,7 @@ router.get('/current',requireAuth, async (req, res, next) => {
         where: {
             ownerId: req.user.id
         },
+        subQuery: false,
         include: [{
             model: Review,
             required: false,
