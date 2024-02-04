@@ -283,6 +283,7 @@ router.get('/:spotId', async (req, res, next) => {
         }, {
             model: User,
             as: "Owner",
+            required: false,
             attributes: ['id','firstName','lastName']
         },
         {
@@ -290,7 +291,7 @@ router.get('/:spotId', async (req, res, next) => {
             required: false,
             attributes: ['id','url','preview']
         }],
-        group: [['Spot.id','ASC'],['Reviews.id'],['Owner.id']]
+        group: [['Spot.id','ASC'],['Reviews.id'],['Owner.id'],['SpotImages.id']]
     })
     if (spotDetail.id === null) return res.status(404).json({
         "message": "Spot couldn't be found"
