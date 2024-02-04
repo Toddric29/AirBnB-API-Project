@@ -105,7 +105,7 @@ router.get('/', async (req, res, next) => {
             model: SpotImage,
             attributes: [['url', 'previewImage']],
         }],
-        group: [['Spot.id','ASC']]
+        group: [['Spots.id','ASC'],['Reviews.id']]
     })
     spots = spots.map(spot => {
         const jsonSpot = spot.toJSON();
@@ -242,7 +242,7 @@ router.get('/current',requireAuth, async (req, res, next) => {
             model: SpotImage,
             attributes: [['url', 'previewImage']],
         }],
-        group: [['Spot.id','ASC']]
+        group: [['Spot.id','ASC'], ['Review.id']]
     })
     userSpot = userSpot.map(spot => {
         const jsonSpot = spot.toJSON();
@@ -281,7 +281,8 @@ router.get('/:spotId', async (req, res, next) => {
         {
             model: SpotImage,
             attributes: ['id','url','preview']
-        }]
+        }],
+        group: [['Spot.id','ASC']]
     })
     if (spotDetail.id === null) return res.status(404).json({
         "message": "Spot couldn't be found"
