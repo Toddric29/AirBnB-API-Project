@@ -283,7 +283,7 @@ router.get('/:spotId', async (req, res, next) => {
         },
         include: [{
             model: Review,
-            // required: false,
+            required: false,
             attributes: [[Sequelize.fn('COUNT', Sequelize.col('review')),'numReviews'],
             [Sequelize.fn('AVG', Sequelize.col('stars')),'avgStarRating']]
         }, {
@@ -306,7 +306,9 @@ router.get('/:spotId', async (req, res, next) => {
         if (jsonSpot.Reviews[0]) {
           jsonSpot.avgStarRating = jsonSpot.Reviews[0].avgStarRating;
           jsonSpot.numReviews = jsonSpot.Reviews[0].numReviews;
-
+        }
+        else {
+          jsonSpot.Reviews = null;
         }
         delete jsonSpot.Reviews
       res.json(jsonSpot);
