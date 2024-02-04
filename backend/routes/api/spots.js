@@ -108,7 +108,7 @@ router.get('/', async (req, res, next) => {
             required: false,
             attributes: [['url', 'previewImage']],
         }],
-        group: [['Spot.id','ASC'],['Reviews.id']]
+        group: [['Spot.id','ASC'],['Reviews.id'],['SpotImages.id']]
     })
     spots = spots.map(spot => {
         const jsonSpot = spot.toJSON();
@@ -203,7 +203,7 @@ router.get('/', async (req, res, next) => {
             required: false,
             attributes: [['url', 'previewImage']],
         }],
-        group: [['Spot.id']],
+        group: [['Spot.id'],['SpotImages.id']],
         ...pagination
     })
     if (filteredSpots[0].id === null) {
@@ -243,6 +243,7 @@ router.get('/current',requireAuth, async (req, res, next) => {
         include: [{
             model: Review,
             required: false,
+            subQuery: false,
             attributes: [[Sequelize.fn('AVG', Sequelize.col('stars')),'avgRating']],
         },
         {
