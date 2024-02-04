@@ -302,7 +302,8 @@ router.get('/:spotId', async (req, res, next) => {
     if (spotDetail === null) return res.status(404).json({
         message: "Spot couldn't be found"
       });
-        const jsonSpot = spotDetail.toJSON();
+      spotDetail = spotDetail.map(spot => {
+        const jsonSpot = spot.toJSON();
         if (jsonSpot.Reviews[0]) {
           jsonSpot.avgStarRating = jsonSpot.Reviews[0].avgStarRating;
           jsonSpot.numReviews = jsonSpot.Reviews[0].numReviews;
@@ -311,6 +312,7 @@ router.get('/:spotId', async (req, res, next) => {
           jsonSpot.Reviews = null;
         }
         delete jsonSpot.Reviews
+      });
       res.json(jsonSpot);
 });
 router.get('/:spotId/reviews', async (req, res, next) => {
