@@ -283,7 +283,7 @@ router.get('/:spotId', async (req, res, next) => {
         },
         include: [{
             model: Review,
-            required: false,
+            // required: false,
             attributes: [[Sequelize.fn('COUNT', Sequelize.col('review')),'numReviews'],
             [Sequelize.fn('AVG', Sequelize.col('stars')),'avgStarRating']]
         }, {
@@ -300,7 +300,7 @@ router.get('/:spotId', async (req, res, next) => {
         group: [['Spot.id'],['Reviews.id'],['Owner.id'],['SpotImages.id']]
     })
     if (spotDetail === null) return res.status(404).json({
-        "message": "Spot couldn't be found"
+        message: "Spot couldn't be found"
       });
         const jsonSpot = spotDetail.toJSON();
         if (jsonSpot.Reviews[0]) {
@@ -345,7 +345,7 @@ router.get('/:spotId/bookings', requireAuth, async (req, res, next) => {
       spotId: req.params.spotId
     },
     attributes: ['spotId','startDate','endDate']
-  })
+  });
   let ownerBookings;
   ownerBookings = await Booking.findAll({
     where: {
@@ -356,9 +356,9 @@ router.get('/:spotId/bookings', requireAuth, async (req, res, next) => {
       required: false,
       attributes: ['id','firstName','lastName']
     }
-  })
-  // console.log(ownerBookings[0].userId)
-    if (req.user.id === ownerBookings[0].userId) {
+  });
+  if (req.user.id === spot.ownerId) {
+    // if (req.user.id === ownerBookings[0].userId) {
       return res.json({Bookings: ownerBookings})
     }
     res.json({Bookings: userBookings})
@@ -392,7 +392,7 @@ router.post('/:spotId/images', requireAuth, async (req, res, next) => {
       })
     if (spot.ownerId !== req.user.id) {
       return res.status(403).json({
-        message: 'You do not have authorization to modify this spot'
+        message: 'Forbidden'
       })
     }
     const image = (await spot.createSpotImage(req.body)).toJSON()
@@ -461,7 +461,7 @@ endDate = new Date(endDate);
       })
     if (req.user.id === spot.ownerId) {
       return res.status(403).json({
-        message: "You don't have the authorization to do this"
+        message: "Forbidden"
       })
     }
     try {
@@ -494,7 +494,7 @@ router.put('/:spotId', requireAuth, validateSpot, async (req, res, next) => {
       })
       if (updatedSpot.ownerId !== req.user.id) {
         return res.status(403).json({
-          message: 'You do not have authorization to modify this spot'
+          message: 'Forbidden'
         })
       }
     updatedSpot.update(req.body)
@@ -518,7 +518,7 @@ router.delete('/:spotId', requireAuth, async (req, res, next) => {
           })
     }
       return res.status(403).json({
-        message: "You do not have authorization to delete this spot"
+        message: "Forbidden"
       })
 })
 

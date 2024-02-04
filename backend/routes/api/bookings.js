@@ -150,7 +150,7 @@ router.delete('/:bookingId', requireAuth, async (req, res, next) => {
           })
     }
     res.status(403).json({
-        message: "You don't have authorization to delete this spot"
+        message: "Forbidden"
       })
 })
 module.exports = router;

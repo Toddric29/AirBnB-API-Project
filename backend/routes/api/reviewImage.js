@@ -28,7 +28,7 @@ router.delete('/:imageId', requireAuth, async (req, res, next) => {
           })
     }
     res.status(403).json({
-        message: "You don't have authorization to delete this spot image"
+        message: "Forbidden"
       })
 })
 

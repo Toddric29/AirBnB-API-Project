@@ -64,7 +64,7 @@ router.post('/:reviewId/images', requireAuth, async (req, res, next) => {
       })
       if (review.userId !== req.user.id) {
         return res.status(403).json({
-          message: 'You do not have authorization to modify this review'
+          message: 'Forbidden'
         })
     }
     const count = await review.countReviewImages();
@@ -89,7 +89,7 @@ router.put('/:reviewId', requireAuth, validateReview, async (req, res, next) => 
       })
       if (updatedReview.userId !== req.user.id) {
         return res.status(403).json({
-          message: 'You do not have authorization to modify this review'
+          message: 'Forbidden'
         })
     }
     updatedReview.update(req.body)
@@ -104,7 +104,7 @@ router.delete('/:reviewId', requireAuth, async (req, res, next) => {
       })
     if (deletedReview.userId !== req.user.id) {
         return res.status(403).json({
-          message: 'You do not have authorization to delete this review'
+          message: 'Forbidden'
         })
     }
     if (deletedReview) {
