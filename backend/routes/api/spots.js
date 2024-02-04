@@ -99,10 +99,12 @@ router.get('/', async (req, res, next) => {
     spots = await Spot.findAll({
         include: [{
             model: Review,
+            required: false,
             attributes: [[Sequelize.fn('AVG', Sequelize.col('stars')),'avgRating']],
         },
         {
             model: SpotImage,
+            required: false,
             attributes: [['url', 'previewImage']],
         }],
         group: [['Spots.id','ASC'],['Reviews.id']]
@@ -200,7 +202,7 @@ router.get('/', async (req, res, next) => {
             required: false,
             attributes: [['url', 'previewImage']],
         }],
-        group: [['Spot.id','ASC']],
+        group: [['Spot.id']],
         ...pagination
     })
     if (filteredSpots[0].id === null) {
@@ -288,7 +290,7 @@ router.get('/:spotId', async (req, res, next) => {
             required: false,
             attributes: ['id','url','preview']
         }],
-        group: [['Spot.id','ASC'],['Reviews.id']]
+        group: [['Spot.id','ASC'],['Reviews.id'],['Owner.id']]
     })
     if (spotDetail.id === null) return res.status(404).json({
         "message": "Spot couldn't be found"
