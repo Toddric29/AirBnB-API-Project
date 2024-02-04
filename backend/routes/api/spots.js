@@ -97,6 +97,7 @@ router.get('/', async (req, res, next) => {
   if (!req.query.page) {
     let spots;
     spots = await Spot.findAll({
+      subQuery: false,
         include: [{
             model: Review,
             required: false,
@@ -107,7 +108,7 @@ router.get('/', async (req, res, next) => {
             required: false,
             attributes: [['url', 'previewImage']],
         }],
-        group: [['Spots.id','ASC'],['Reviews.id']]
+        group: [['Spot.id','ASC'],['Reviews.id']]
     })
     spots = spots.map(spot => {
         const jsonSpot = spot.toJSON();
@@ -235,6 +236,7 @@ router.get('/', async (req, res, next) => {
 router.get('/current',requireAuth, async (req, res, next) => {
     let userSpot;
     userSpot = await Spot.findAll({
+      subQuery: false,
         where: {
             ownerId: req.user.id
         },
@@ -291,7 +293,7 @@ router.get('/:spotId', async (req, res, next) => {
             required: false,
             attributes: ['id','url','preview']
         }],
-        group: [['Spot.id','ASC'],['Reviews.id'],['Owner.id'],['SpotImages.id']]
+        group: [['Spot.id'],['Reviews.id'],['Owner.id'],['SpotImages.id']]
     })
     if (spotDetail.id === null) return res.status(404).json({
         "message": "Spot couldn't be found"
