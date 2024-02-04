@@ -6,6 +6,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 module.exports = {
   async up(queryInterface, Sequelize) {
+    options.uniqueKeys =  { 'user-spot': { fields: ['userId', 'spotId'] } };
     await queryInterface.createTable('Reviews', {
       id: {
         allowNull: false,
@@ -48,12 +49,12 @@ module.exports = {
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
       }
-    }
-    ,{ uniqueKeys: {
-      'user-spot': {
-        fields: ['userId', 'spotId']
-      }}
     },
+    // ,{ uniqueKeys: {
+    //   'user-spot': {
+    //     fields: ['userId', 'spotId']
+    //   }}
+    // },
     options);
   },
   async down(queryInterface, Sequelize) {
