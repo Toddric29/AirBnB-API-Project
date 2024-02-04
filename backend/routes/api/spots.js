@@ -94,7 +94,7 @@ const validateSpot = [
   ];
 
 router.get('/', async (req, res, next) => {
-  if (req.query === '{}') {
+  if (!req.query.page) {
     let spots;
     spots = await Spot.findAll({
         include: [{
@@ -126,7 +126,7 @@ router.get('/', async (req, res, next) => {
       });
       return res.json({Spots: spots});
   }
-  if (req.query !== '{}') {
+  if (req.query.page) {
     let {page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice} = req.query
     if (page < 1 || size < 1 || maxLat > 90 || minLat < -90 || maxLat < -90
       || minLat > 90 || minLng > 180 || maxLng < -180 || maxLng > 180
@@ -154,7 +154,7 @@ router.get('/', async (req, res, next) => {
         pagination.limit = size;
         pagination.offset = size * (page - 1);
     }
-    let spots;
+    let filteredSpots;
   const key = [Op.and];
 
     const where = {
@@ -188,21 +188,8 @@ router.get('/', async (req, res, next) => {
       where.price[Op.and].push({[Op.lte] : Math.max(0, maxPrice)});
     }
 
-    spots = await Spot.findAll({
-      where: where /*{
-        lat: {
-          [Op.between]: [minLat,maxLat]
-        },
-        lng: {
-          [Op.between]: [minLng,maxLng]
-        },
-        price: {
-          [Op.between]: [minPrice,maxPrice]
-        },
-        description: {
-          [Op.and]: []
-        }
-      }*/,
+    filteredSpots = await Spot.findAll({
+      where: where,
         include: [{
             model: Review,
             attributes: [[Sequelize.fn('AVG', Sequelize.col('stars')),'avgRating']],
@@ -214,8 +201,13 @@ router.get('/', async (req, res, next) => {
         group: [['Spot.id','ASC']],
         ...pagination
     })
-    spots = spots.map(spot => {
-        const jsonSpot = spot.toJSON();
+    if (filteredSpots[0].id === null) {
+      return res.status(403).json({
+        message: 'No spots meet this criteria'
+      })
+    }
+    filteredSpots = filteredSpots.map(filteredSpot => {
+        const jsonSpot = filteredSpot.toJSON();
         if (jsonSpot.Reviews[0]) {
           jsonSpot.avgRating = jsonSpot.Reviews[0].avgRating;
         } else {
@@ -231,100 +223,10 @@ router.get('/', async (req, res, next) => {
           delete jsonSpot.SpotImages
         return jsonSpot;
       });
-      res.json({Spots: spots, page, size});
+      return res.json({Spots: filteredSpots, page, size});
   }
 })
 
-// router.get('/', validateQuery, async (req, res, next) => {
-//   let {page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice} = req.query
-//   size = Math.min(Math.max(1, parseInt(size || 20)),20);
-//   page = Math.min(Math.max(1, parseInt(page || 1)), 10);
-
-//   const pagination = {};
-
-//   if (size >= 1 && page >= 1) {
-//       pagination.limit = size;
-//       pagination.offset = size * (page - 1);
-//   }
-//   let spots;
-// const key = [Op.and];
-
-//   const where = {
-//     lat: {
-//       [Op.and]: []
-//     },
-//     lng: {
-//       [Op.and]: []
-//     },
-//     price: {
-//       [Op.and]: []
-//     }
-//   };
-
-//   if (minLat) {
-//     where.lat[Op.and].push({[Op.gte] : minLat});
-//   }
-//   if (maxLat) {
-//     where.lat[Op.and].push({[Op.lte] : maxLat});
-//   }
-//   if (minLng) {
-//     where.lng[Op.and].push({[Op.gte] : minLng});
-//   }
-//   if (maxLng) {
-//     where.lng[Op.and].push({[Op.lte] : maxLng});
-//   }
-//   if (minPrice) {
-//     where.price[Op.and].push({[Op.gte] : Math.max(0, minPrice)});
-//   }
-//   if (maxPrice) {
-//     where.price[Op.and].push({[Op.lte] : Math.max(0, maxPrice)});
-//   }
-
-//   spots = await Spot.findAll({
-//     where: where /*{
-//       lat: {
-//         [Op.between]: [minLat,maxLat]
-//       },
-//       lng: {
-//         [Op.between]: [minLng,maxLng]
-//       },
-//       price: {
-//         [Op.between]: [minPrice,maxPrice]
-//       },
-//       description: {
-//         [Op.and]: []
-//       }
-//     }*/,
-//       include: [{
-//           model: Review,
-//           attributes: [[Sequelize.fn('AVG', Sequelize.col('stars')),'avgRating']],
-//       },
-//       {
-//           model: SpotImage,
-//           attributes: [['url', 'previewImage']],
-//       }],
-//       group: [['Spot.id','ASC']],
-//       ...pagination
-//   })
-//   spots = spots.map(spot => {
-//       const jsonSpot = spot.toJSON();
-//       if (jsonSpot.Reviews[0]) {
-//         jsonSpot.avgRating = jsonSpot.Reviews[0].avgRating;
-//       } else {
-//         jsonSpot.avgRating = null;
-//       }
-//       delete jsonSpot.Reviews
-//       if (jsonSpot.SpotImages[0]) {
-//           jsonSpot.previewImage = jsonSpot.SpotImages[0].previewImage;
-//         } else {
-//           jsonSpot.previewImage = null;
-//         }
-//         delete jsonSpot.Reviews
-//         delete jsonSpot.SpotImages
-//       return jsonSpot;
-//     });
-//     res.json({Spots: spots, page, size});
-// })
 
 router.get('/current',requireAuth, async (req, res, next) => {
     let userSpot;
@@ -381,7 +283,7 @@ router.get('/:spotId', async (req, res, next) => {
             attributes: ['id','url','preview']
         }]
     })
-    if (spotDetail.id === null) res.status(404).json({
+    if (spotDetail.id === null) return res.status(404).json({
         "message": "Spot couldn't be found"
       });
         const jsonSpot = spotDetail.toJSON();
@@ -414,10 +316,10 @@ router.get('/:spotId/reviews', async (req, res, next) => {
       })
       res.json({Reviews: userReviews});
 });
-router.get('/:spotId/bookings', async (req, res, next) => {
+router.get('/:spotId/bookings', requireAuth, async (req, res, next) => {
   const spot = await Spot.findByPk(req.params.spotId);
   if (!spot) return res.status(404).json({
-      "message": "Spot couldn't be found"
+      message: "Spot couldn't be found"
     })
   let userBookings;
   userBookings = await Booking.findAll({
@@ -436,6 +338,7 @@ router.get('/:spotId/bookings', async (req, res, next) => {
       attributes: ['id','firstName','lastName']
     }
   })
+  // console.log(ownerBookings[0].userId)
     if (req.user.id === ownerBookings[0].userId) {
       return res.json({Bookings: ownerBookings})
     }
@@ -457,7 +360,7 @@ router.post('/', requireAuth, validateSpot, async (req, res, next) => {
       description,
       price
     })
-    res.status(201).json(newSpot)
+    return res.status(201).json(newSpot)
     }
     catch(e) {
         delete e.stack
@@ -465,11 +368,11 @@ router.post('/', requireAuth, validateSpot, async (req, res, next) => {
 })
 router.post('/:spotId/images', requireAuth, async (req, res, next) => {
     const spot = await Spot.findByPk(req.params.spotId);
-    if (!spot) return res.status(404).json({
+    if (spot === null) return res.status(404).json({
         "message": "Spot couldn't be found"
       })
     if (spot.ownerId !== req.user.id) {
-      return res.status(404).json({
+      return res.status(403).json({
         message: 'You do not have authorization to modify this spot'
       })
     }
@@ -489,7 +392,7 @@ router.post('/:spotId/reviews', requireAuth, validateReview, async (req, res, ne
      let {review, stars} = req.body
     try {
         const newReview = (await spot.createReview({userId: req.user.id, review, stars}, req.body)).toJSON()
-        res.status(201).json({
+        return res.status(201).json({
             id: newReview.id,
             userId: newReview.userId,
             spotId: req.params.spotId,
@@ -512,16 +415,17 @@ router.post('/:spotId/reviews', requireAuth, validateReview, async (req, res, ne
 
 })
 router.post('/:spotId/bookings', requireAuth, async (req, res, next) => {
+let { startDate, endDate } = req.body;
+startDate = new Date(startDate);
+endDate = new Date(endDate);
     const booking = await Booking.findOne({
         where: {
             spotId: req.params.spotId,
-            [Op.or]: [{startDate:{[Op.between]:[req.body.startDate,req.body.endDate]}},
-            {endDate:{[Op.between]:[req.body.startDate,req.body.endDate]}}]
+            [Op.or]: [{startDate:{[Op.between]:[startDate,endDate]}},
+            {endDate:{[Op.between]:[startDate,endDate]}},
+          {[Op.and]:{startDate:{[Op.lte]: startDate},endDate:{[Op.gte]:endDate}}}]
         },
-        limit: 1,
-        attributes: {
-            include: ['userId']
-        },
+        limit: 1
     });
     if (booking) {
         return res.status(403).json({
@@ -532,30 +436,26 @@ router.post('/:spotId/bookings', requireAuth, async (req, res, next) => {
             }
           })
     }
-    let value = 3;
     const spot = await Spot.findByPk(req.params.spotId);
-    if (!spot) return res.status(404).json({
-        "message": "Spot couldn't be found"
+    if (spot === null) return res.status(404).json({
+        message: "Spot couldn't be found"
       })
+    if (req.user.id === spot.ownerId) {
+      return res.status(403).json({
+        message: "You don't have the authorization to do this"
+      })
+    }
     try {
-      const {startDate, endDate} = req.body
-        const newBooking = (await spot.createBooking({userId: req.user.id, endDate, startDate})).toJSON()
-        value++
-        res.status(200).json({
-            id: value,
-            spotId: newBooking.spotId,
-            userId: req.user.id,
-            startDate,
-            endDate,
-            updatedAt: newBooking.updatedAt,
-            createdAt: newBooking.createdAt
-        })
+      // const {startDate, endDate} = req.body
+        const newBooking = (await Booking.create({userId: req.user.id, spotId: parseInt(req.params.spotId),endDate, startDate})).toJSON()
+        res.status(200).json(
+            newBooking)
     } catch(err) {
         if (err.name === 'SequelizeValidationError') {
             return res.status(400).json({
-                message: "Bad Request", // (or "Validation error" if generated by Sequelize),
+                message: "Bad Request",
                 errors: {
-                  endDate:  err.message//"endDate cannot be on or before startDate"
+                  endDate:  "endDate cannot be on or before startDate"
                 }
               })
         }
@@ -574,7 +474,7 @@ router.put('/:spotId', requireAuth, validateSpot, async (req, res, next) => {
         "message": "Spot couldn't be found"
       })
       if (updatedSpot.ownerId !== req.user.id) {
-        return res.status(404).json({
+        return res.status(403).json({
           message: 'You do not have authorization to modify this spot'
         })
       }
@@ -582,6 +482,12 @@ router.put('/:spotId', requireAuth, validateSpot, async (req, res, next) => {
     res.json(updatedSpot)
 });
 router.delete('/:spotId', requireAuth, async (req, res, next) => {
+  let spot = await Spot.findByPk(req.params.spotId)
+  if (spot === null) {
+    return res.status(404).json({
+      "message": "Spot couldn't be found"
+    })
+  }
     const results = await Spot.scope({method: ['authorization',req.user.id]}).destroy({
         where: {
             id: req.params.spotId
@@ -589,11 +495,11 @@ router.delete('/:spotId', requireAuth, async (req, res, next) => {
     })
     if (results) {
         return res.json({
-            "message": "Successfully deleted"
+            message: "Successfully deleted"
           })
     }
-    res.status(404).json({
-        "message": "Spot couldn't be found"
+      return res.status(403).json({
+        message: "You do not have authorization to delete this spot"
       })
 })
 

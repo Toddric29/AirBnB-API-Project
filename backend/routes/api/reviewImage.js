@@ -17,17 +17,17 @@ router.delete('/:imageId', requireAuth, async (req, res, next) => {
     })
     if (deletedReviewImage === null) {
         return res.status(404).json({
-            "message": "Review Image couldn't be found"
+            message: "Review Image couldn't be found"
           })
     }
     if (deletedReviewImage.Review.userId === req.user.id) {
         await deletedReviewImage.destroy()
         return res.json({
-            "message": "Successfully deleted"
+            message: "Successfully deleted"
           })
     }
-    res.status(404).json({
-        "message": "You don't have authorization to delete this spot image"
+    res.status(403).json({
+        message: "You don't have authorization to delete this spot image"
       })
 })
 

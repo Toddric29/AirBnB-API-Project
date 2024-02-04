@@ -57,10 +57,10 @@ router.get('/current',requireAuth, async (req, res, next) => {
 router.post('/:reviewId/images', requireAuth, async (req, res, next) => {
     const review = await Review.findByPk(req.params.reviewId);
     if (!review) return res.status(404).json({
-        "message": "Review couldn't be found"
+        message: "Review couldn't be found"
       })
       if (review.userId !== req.user.id) {
-        return res.status(404).json({
+        return res.status(403).json({
           message: 'You do not have authorization to modify this review'
         })
     }
@@ -82,10 +82,10 @@ router.put('/:reviewId', requireAuth, validateReview, async (req, res, next) => 
     let updatedReview;
     updatedReview = await Review.findByPk(req.params.reviewId)
     if (updatedReview === null) return res.status(404).json({
-        "message": "Review couldn't be found"
+        message: "Review couldn't be found"
       })
       if (updatedReview.userId !== req.user.id) {
-        return res.status(404).json({
+        return res.status(403).json({
           message: 'You do not have authorization to modify this review'
         })
     }
@@ -97,17 +97,17 @@ router.delete('/:reviewId', requireAuth, async (req, res, next) => {
     let deletedReview;
     deletedReview = await Review.findByPk(req.params.reviewId)
     if (!deletedReview) return res.status(404).json({
-        "message": "Review couldn't be found"
+        message: "Review couldn't be found"
       })
     if (deletedReview.userId !== req.user.id) {
-        return res.status(404).json({
+        return res.status(403).json({
           message: 'You do not have authorization to delete this review'
         })
     }
     if (deletedReview) {
         deletedReview.destroy()
         return res.json({
-            "message": "Successfully deleted"
+            message: "Successfully deleted"
           })
     }
 })

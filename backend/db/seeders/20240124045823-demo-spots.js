@@ -15,11 +15,11 @@ const spots = [
     city: 'Utopia',
     state: 'Kansas',
     country: 'USA',
-    lat: 90,
-    lng: -23,
+    lat: 35,
+    lng: 40,
     name: 'Maj',
     description: 'A place to jam',
-    price: 123
+    price: 75
   },
   {
     email: 'user1@user.io',
