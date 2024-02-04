@@ -24,6 +24,7 @@ router.get('/current',requireAuth, async (req, res, next) => {
         },
         include: [{
             model: User,
+            required: false,
             attributes: ['id','firstName','lastName'],
         },
         {
@@ -33,11 +34,13 @@ router.get('/current',requireAuth, async (req, res, next) => {
             },
             include: {
                 model:SpotImage,
+                required: false,
                 attributes: [['url', 'previewImage']],
             }
         },
         {
             model: ReviewImage,
+            required: false,
             attributes: ['id','url']
         }]
     })

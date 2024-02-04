@@ -30,6 +30,7 @@ router.get('/current',requireAuth, async (req, res, next) => {
             },
             include: {
                 model:SpotImage,
+                required: false,
                 attributes: [['url', 'previewImage']],
             }
         }]
@@ -128,7 +129,8 @@ router.delete('/:bookingId', requireAuth, async (req, res, next) => {
             include: ['id']
         },
         include: {
-            model: Spot
+            model: Spot,
+            required: false
         }
     })
     if (deletedBooking === null) {

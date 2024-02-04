@@ -192,10 +192,12 @@ router.get('/', async (req, res, next) => {
       where: where,
         include: [{
             model: Review,
+            required: false,
             attributes: [[Sequelize.fn('AVG', Sequelize.col('stars')),'avgRating']],
         },
         {
             model: SpotImage,
+            required: false,
             attributes: [['url', 'previewImage']],
         }],
         group: [['Spot.id','ASC']],
@@ -236,13 +238,15 @@ router.get('/current',requireAuth, async (req, res, next) => {
         },
         include: [{
             model: Review,
+            required: false,
             attributes: [[Sequelize.fn('AVG', Sequelize.col('stars')),'avgRating']],
         },
         {
             model: SpotImage,
+            required: false,
             attributes: [['url', 'previewImage']],
         }],
-        group: [['Spot.id','ASC'], ['Review.id']]
+        group: [['Spot.id'], ['Review.id']]
     })
     userSpot = userSpot.map(spot => {
         const jsonSpot = spot.toJSON();
@@ -271,6 +275,7 @@ router.get('/:spotId', async (req, res, next) => {
         },
         include: [{
             model: Review,
+            required: false,
             attributes: [[Sequelize.fn('COUNT', Sequelize.col('review')),'numReviews'],
             [Sequelize.fn('AVG', Sequelize.col('stars')),'avgStarRating']]
         }, {
@@ -280,9 +285,10 @@ router.get('/:spotId', async (req, res, next) => {
         },
         {
             model: SpotImage,
+            required: false,
             attributes: ['id','url','preview']
         }],
-        group: [['Spot.id','ASC']]
+        group: [['Spot.id','ASC'],['Reviews.id']]
     })
     if (spotDetail.id === null) return res.status(404).json({
         "message": "Spot couldn't be found"
@@ -304,10 +310,12 @@ router.get('/:spotId/reviews', async (req, res, next) => {
       },
         include: [{
             model: User,
+            required: false,
             attributes: ['id','firstName','lastName'],
         },
         {
             model: ReviewImage,
+            required: false,
             attributes: ['id','url']
         }]
     })
@@ -336,6 +344,7 @@ router.get('/:spotId/bookings', requireAuth, async (req, res, next) => {
     },
     include: {
       model: User,
+      required: false,
       attributes: ['id','firstName','lastName']
     }
   })

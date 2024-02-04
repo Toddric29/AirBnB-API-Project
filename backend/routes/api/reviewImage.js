@@ -12,7 +12,8 @@ router.delete('/:imageId', requireAuth, async (req, res, next) => {
             id: req.params.imageId
         },
         include: {
-            model: Review
+            model: Review,
+            required: false
         }
     })
     if (deletedReviewImage === null) {

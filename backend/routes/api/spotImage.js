@@ -13,7 +13,8 @@ router.delete('/:imageId', requireAuth, async (req, res, next) => {
             id: req.params.imageId
         },
         include: {
-            model: Spot
+            model: Spot,
+            required: false
         }
     })
     if (deletedSpotImage === null) {
