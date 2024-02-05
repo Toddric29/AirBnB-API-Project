@@ -419,7 +419,7 @@ router.post('/:spotId/reviews', requireAuth, validateReview, async (req, res, ne
             userId: newReview.userId,
             spotId: req.params.spotId,
             review,
-            stars,
+            stars: parseInt(stars),
             createdAt: newReview.createdAt,
             updatedAt: newReview.updatedAt
         })
