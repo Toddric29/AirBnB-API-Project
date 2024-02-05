@@ -111,10 +111,13 @@ router.get('/', async (req, res, next) => {
         }],
         group: [['Spot.id','ASC'],['Reviews.id'],['SpotImages.id']]
     })
+    spots.lat = parseInt(spots.lat);
+    spots.lng = parseInt(spots.lng);
+    spots.price = parseInt(spots.price)
     spots = spots.map(spot => {
         const jsonSpot = spot.toJSON();
         if (jsonSpot.Reviews[0]) {
-          jsonSpot.avgRating = jsonSpot.Reviews[0].avgRating;
+          jsonSpot.avgRating = jsonSpot.Reviews[0].parseInt(avgRating);
         } else {
           jsonSpot.avgRating = null;
         }
@@ -217,7 +220,7 @@ router.get('/', async (req, res, next) => {
     filteredSpots = filteredSpots.map(filteredSpot => {
         const jsonSpot = filteredSpot.toJSON();
         if (jsonSpot.Reviews[0]) {
-          jsonSpot.avgRating = jsonSpot.Reviews[0].avgRating;
+          jsonSpot.avgRating = jsonSpot.Reviews[0].parseInt(avgRating);
         } else {
           jsonSpot.avgRating = null;
         }
@@ -256,10 +259,13 @@ router.get('/current',requireAuth, async (req, res, next) => {
         }],
         group: [['Spot.id'], ['Reviews.id'], ['SpotImages.id']]
     })
+    userSpot.lat = parseInt(userSpot.lat);
+    userSpot.lng = parseInt(userSpot.lng);
+    userSpot.price = parseInt(userSpot.price);
     userSpot = userSpot.map(spot => {
         const jsonSpot = spot.toJSON();
         if (jsonSpot.Reviews[0]) {
-          jsonSpot.avgRating = jsonSpot.Reviews[0].avgRating;
+          jsonSpot.avgRating = jsonSpot.Reviews[0].parseInt(avgRating);
         } else {
           jsonSpot.avgRating = null;
         }
@@ -299,13 +305,16 @@ router.get('/:spotId', async (req, res, next) => {
         }],
         group: [['Spot.id'],['Reviews.id'],['Owner.id'],['SpotImages.id']]
     })
+    spotDetail.lat = parseInt(spotDetail.lat);
+    spotDetail.lng = parseInt(spotDetail.lng);
+    spotDetail.price = parseInt(spotDetail.price);
     if (spotDetail === null) return res.status(404).json({
         message: "Spot couldn't be found"
       });
         const jsonSpot = spotDetail.toJSON();
         if (jsonSpot.Reviews[0]) {
-          jsonSpot.avgStarRating = jsonSpot.Reviews[0].avgStarRating;
-          jsonSpot.numReviews = jsonSpot.Reviews[0].numReviews;
+          jsonSpot.avgStarRating = jsonSpot.Reviews[0].parseInt(avgStarRating);
+          jsonSpot.numReviews = jsonSpot.Reviews[0].parseInt(numReviews);
         }
         else {
           jsonSpot.avgStarRating = null;
@@ -376,11 +385,11 @@ router.post('/', requireAuth, validateSpot, async (req, res, next) => {
       city,
       state,
       country,
-      lat,
-      lng,
+      lat: parseInt(lat),
+      lng: parseInt(lng),
       name,
       description,
-      price
+      price: parseInt(price)
     })
     return res.status(201).json(newSpot)
     }
