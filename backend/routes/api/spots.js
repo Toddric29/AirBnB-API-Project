@@ -117,7 +117,7 @@ router.get('/', async (req, res, next) => {
     spots = spots.map(spot => {
         const jsonSpot = spot.toJSON();
         if (jsonSpot.Reviews[0]) {
-          jsonSpot.avgRating = jsonSpot.Reviews[0].parseInt(avgRating);
+          jsonSpot.avgRating = parseInt(jsonSpot.Reviews[0].avgRating);
         } else {
           jsonSpot.avgRating = null;
         }
@@ -220,7 +220,7 @@ router.get('/', async (req, res, next) => {
     filteredSpots = filteredSpots.map(filteredSpot => {
         const jsonSpot = filteredSpot.toJSON();
         if (jsonSpot.Reviews[0]) {
-          jsonSpot.avgRating = jsonSpot.Reviews[0].parseInt(avgRating);
+          jsonSpot.avgRating = parseInt(jsonSpot.Reviews[0].avgRating);
         } else {
           jsonSpot.avgRating = null;
         }
@@ -265,7 +265,7 @@ router.get('/current',requireAuth, async (req, res, next) => {
     userSpot = userSpot.map(spot => {
         const jsonSpot = spot.toJSON();
         if (jsonSpot.Reviews[0]) {
-          jsonSpot.avgRating = jsonSpot.Reviews[0].parseInt(avgRating);
+          jsonSpot.avgRating = parseInt(jsonSpot.Reviews[0].avgRating);
         } else {
           jsonSpot.avgRating = null;
         }
@@ -313,8 +313,8 @@ router.get('/:spotId', async (req, res, next) => {
       });
         const jsonSpot = spotDetail.toJSON();
         if (jsonSpot.Reviews[0]) {
-          jsonSpot.avgStarRating = jsonSpot.Reviews[0].parseInt(avgStarRating);
-          jsonSpot.numReviews = jsonSpot.Reviews[0].parseInt(numReviews);
+          jsonSpot.avgStarRating = parseInt(jsonSpot.Reviews[0].avgStarRating);
+          jsonSpot.numReviews = parseInt(jsonSpot.Reviews[0].numReviews);
         }
         else {
           jsonSpot.avgStarRating = null;
