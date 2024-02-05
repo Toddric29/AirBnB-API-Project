@@ -303,12 +303,13 @@ router.get('/:spotId', async (req, res, next) => {
         message: "Spot couldn't be found"
       });
         const jsonSpot = spotDetail.toJSON();
-        if (jsonSpot.Reviews) {
-          jsonSpot.avgStarRating = jsonSpot.Reviews.avgStarRating;
-          jsonSpot.numReviews = jsonSpot.Reviews.numReviews;
+        if (jsonSpot.Reviews[0]) {
+          jsonSpot.avgStarRating = jsonSpot.Reviews[0].avgStarRating;
+          jsonSpot.numReviews = jsonSpot.Reviews[0].numReviews;
         }
         else {
-          jsonSpot.Reviews = null;
+          jsonSpot.avgStarRating = null;
+          jsonSpot.numReviews = null;
         }
         delete jsonSpot.Reviews
       res.json(jsonSpot);
