@@ -131,7 +131,23 @@ router.get('/', async (req, res, next) => {
           delete jsonSpot.SpotImages
         return jsonSpot;
       });
-      return res.json({Spots: spots});
+      return res.json({Spots: {
+        id,
+        ownerId,
+        address,
+        city,
+        state,
+        country,
+        lat: parseFloat(lat),
+        lng: parseFloat(lng),
+        name,
+        description,
+        price: parseFloat(price),
+        createdAt,
+        updatedAt,
+        avgRating: parseFloat(avgRating),
+        previewImage
+      }});
   }
   if (req.query.page) {
     let {page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice} = req.query
@@ -237,7 +253,23 @@ router.get('/', async (req, res, next) => {
           delete jsonSpot.SpotImages
         return jsonSpot;
       });
-      return res.json({Spots: filteredSpots, page, size});
+      return res.json({Spots: {
+        id,
+        ownerId,
+        address,
+        city,
+        state,
+        country,
+        lat: parseFloat(lat),
+        lng: parseFloat(lng),
+        name,
+        description,
+        price: parseFloat(price),
+        createdAt,
+        updatedAt,
+        avgRating: parseFloat(avgRating),
+        previewImage
+      }, page, size});
   }
 })
 
@@ -282,7 +314,23 @@ router.get('/current',requireAuth, async (req, res, next) => {
           delete jsonSpot.SpotImages
         return jsonSpot;
       });
-      res.json({Spots: userSpot});
+      res.json({Spots: {
+        id,
+        ownerId,
+        address,
+        city,
+        state,
+        country,
+        lat: parseFloat(lat),
+        lng: parseFloat(lng),
+        name,
+        description,
+        price: parseFloat(price),
+        createdAt,
+        updatedAt,
+        avgRating: parseFloat(avgRating),
+        previewImage
+      }});
 })
 router.get('/:spotId', async (req, res, next) => {
     let spotDetail;
@@ -395,6 +443,7 @@ router.post('/', requireAuth, validateSpot, async (req, res, next) => {
       price: parseFloat(price)
     })
     return res.status(201).json({
+      id,
       ownerId: req.user.id,
       address,
       city,
