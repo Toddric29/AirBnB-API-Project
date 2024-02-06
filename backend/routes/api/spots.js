@@ -130,7 +130,7 @@ router.get('/', async (req, res, next) => {
       });
       let {id, ownerId, address, city, state, country, lat, lng, name, description,
       price, createdAt, updatedAt, avgRating, previewImage } = spots
-      return res.json({Spots: {
+      return res.json({Spots:
         id,
         ownerId,
         address,
@@ -146,7 +146,7 @@ router.get('/', async (req, res, next) => {
         updatedAt,
         avgRating: parseFloat(avgRating),
         previewImage
-      }});
+      });
   }
   if (req.query.page) {
     let {page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice} = req.query
@@ -252,7 +252,7 @@ router.get('/', async (req, res, next) => {
       let {id, ownerId, address, city, state, country, lat, lng, name, description,
         price, createdAt, updatedAt, avgRating, previewImage } = filteredSpots
 
-      return res.json({Spots: {
+      return res.json({Spots:
         id,
         ownerId,
         address,
@@ -268,7 +268,7 @@ router.get('/', async (req, res, next) => {
         updatedAt,
         avgRating: parseFloat(avgRating),
         previewImage
-      }, page, size});
+      , page, size});
   }
 })
 
@@ -312,7 +312,7 @@ router.get('/current',requireAuth, async (req, res, next) => {
       });
       let {id, ownerId, address, city, state, country, lat, lng, name, description,
         price, createdAt, updatedAt, avgRating, previewImage } = userSpot
-      res.json({Spots: {
+      res.json({Spots:
         id,
         ownerId,
         address,
@@ -328,7 +328,7 @@ router.get('/current',requireAuth, async (req, res, next) => {
         updatedAt,
         avgRating: parseFloat(avgRating),
         previewImage
-      }});
+      });
 })
 router.get('/:spotId', async (req, res, next) => {
     let spotDetail;
