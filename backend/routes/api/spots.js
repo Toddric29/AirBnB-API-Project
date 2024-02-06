@@ -419,7 +419,6 @@ router.get('/:spotId/bookings', requireAuth, async (req, res, next) => {
     }
   });
   if (req.user.id === spot.ownerId) {
-    // if (req.user.id === ownerBookings[0].userId) {
       return res.json({Bookings: ownerBookings})
     }
     res.json({Bookings: userBookings})
