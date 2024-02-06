@@ -477,7 +477,6 @@ endDate = new Date(endDate);
       })
     }
     try {
-      // const {startDate, endDate} = req.body
         const newBooking = (await Booking.create({userId: req.user.id, spotId: parseInt(req.params.spotId),endDate, startDate})).toJSON()
         res.status(200).json(
             newBooking)
