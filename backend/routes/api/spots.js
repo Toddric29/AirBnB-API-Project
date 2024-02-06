@@ -132,7 +132,7 @@ router.get('/', async (req, res, next) => {
         return jsonSpot;
       });
       return res.json({Spots: {
-        id: parseInt(jsonSpot.id),
+        id: parseInt(spots.id),
         ownerId,
         address,
         city,
@@ -254,7 +254,7 @@ router.get('/', async (req, res, next) => {
         return jsonSpot;
       });
       return res.json({Spots: {
-        id: parseInt(jsonSpot.id),
+        id: parseInt(filteredSpots.id),
         ownerId,
         address,
         city,
@@ -315,7 +315,7 @@ router.get('/current',requireAuth, async (req, res, next) => {
         return jsonSpot;
       });
       res.json({Spots: {
-        id: parseInt(jsonSpot.id),
+        id: parseInt(userSpot.id),
         ownerId,
         address,
         city,
