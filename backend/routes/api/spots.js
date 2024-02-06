@@ -132,7 +132,7 @@ router.get('/', async (req, res, next) => {
         return jsonSpot;
       });
       return res.json({Spots: {
-        id,
+        id: parseInt(jsonSpot.id),
         ownerId,
         address,
         city,
@@ -254,7 +254,7 @@ router.get('/', async (req, res, next) => {
         return jsonSpot;
       });
       return res.json({Spots: {
-        id,
+        id: parseInt(jsonSpot.id),
         ownerId,
         address,
         city,
@@ -315,7 +315,7 @@ router.get('/current',requireAuth, async (req, res, next) => {
         return jsonSpot;
       });
       res.json({Spots: {
-        id,
+        id: parseInt(jsonSpot.id),
         ownerId,
         address,
         city,
@@ -443,7 +443,7 @@ router.post('/', requireAuth, validateSpot, async (req, res, next) => {
       price: parseFloat(price)
     })
     return res.status(201).json({
-      id,
+      id: parseInt(newSpot.id),
       ownerId: req.user.id,
       address,
       city,
