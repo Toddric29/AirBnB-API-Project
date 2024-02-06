@@ -113,9 +113,6 @@ router.get('/', async (req, res, next) => {
     })
     spots = spots.map(spot => {
         const jsonSpot = spot.toJSON();
-        spot.lat = parseFloat(spot.lat);
-        spot.lng = parseFloat(spot.lng);
-        spot.price = parseFloat(spot.price)
         if (jsonSpot.Reviews[0]) {
           jsonSpot.avgRating = parseFloat(jsonSpot.Reviews[0].avgRating);
         } else {
@@ -131,23 +128,10 @@ router.get('/', async (req, res, next) => {
           delete jsonSpot.SpotImages
         return jsonSpot;
       });
-      return res.json({Spots: {
-        id: parseInt(spots.id),
-        ownerId: parseInt(spots.ownerId),
-        address: spots.address,
-        city: spots.city,
-        state: spots.state,
-        country: spots.country,
-        lat: parseFloat(spots.lat),
-        lng: parseFloat(spots.lng),
-        name: spots.name,
-        description: spots.description,
-        price: parseFloat(spots.price),
-        createdAt: spots.createdAt,
-        updatedAt: spots.updatedAt,
-        avgRating: parseFloat(spots.avgRating),
-        previewImage: spots.previewImage
-      }});
+      spots.lat = parseFloat(spots.lat);
+      spots.lng = parseFloat(spots.lng);
+      spots.price = parseFloat(spots.price)
+      return res.json({Spots: spots});
   }
   if (req.query.page) {
     let {page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice} = req.query
@@ -235,9 +219,6 @@ router.get('/', async (req, res, next) => {
     }
     filteredSpots = filteredSpots.map(filteredSpot => {
         const jsonSpot = filteredSpot.toJSON();
-        filteredSpot.lat = parseFloat(filteredSpot.lat);
-        filteredSpot.lng = parseFloat(filteredSpot.lng);
-        filteredSpot.price = parseFloat(filteredSpot.price)
         if (jsonSpot.Reviews[0]) {
           jsonSpot.avgRating = parseFloat(jsonSpot.Reviews[0].avgRating);
         } else {
@@ -253,23 +234,10 @@ router.get('/', async (req, res, next) => {
           delete jsonSpot.SpotImages
         return jsonSpot;
       });
-      return res.json({Spots: {
-        id: parseInt(filteredSpots.id),
-        ownerId: parseInt(filteredSpots.ownerId),
-        address: filteredSpots.address,
-        city: filteredSpots.city,
-        state: filteredSpots.state,
-        country: filteredSpots.country,
-        lat: parseFloat(filteredSpots.lat),
-        lng: parseFloat(filteredSpots.lng),
-        name: filteredSpots.name,
-        description: filteredSpots.description,
-        price: parseFloat(filteredSpots.price),
-        createdAt: filteredSpots.createdAt,
-        updatedAt: filteredSpots.updatedAt,
-        avgRating: parseFloat(filteredSpots.avgRating),
-        previewImage: filteredSpots.previewImage
-      }, page, size});
+      filteredSpots.lat = parseFloat(filteredSpots.lat);
+      filteredSpots.lng = parseFloat(filteredSpots.lng);
+      filteredSpots.price = parseFloat(filteredSpots.price)
+      return res.json({Spots: filteredSpots, page, size});
   }
 })
 
@@ -296,9 +264,6 @@ router.get('/current',requireAuth, async (req, res, next) => {
     })
     userSpot = userSpot.map(spot => {
         const jsonSpot = spot.toJSON();
-        spot.lat = parseFloat(spot.lat);
-        spot.lng = parseFloat(spot.lng);
-        spot.price = parseFloat(spot.price);
         if (jsonSpot.Reviews[0]) {
           jsonSpot.avgRating = parseFloat(jsonSpot.Reviews[0].avgRating);
         } else {
@@ -314,23 +279,10 @@ router.get('/current',requireAuth, async (req, res, next) => {
           delete jsonSpot.SpotImages
         return jsonSpot;
       });
-      res.json({Spots: {
-        id: parseInt(userSpot.id),
-        ownerId: parseInt(userSpot.ownerId),
-        address: userSpot.address,
-        city: userSpot.city,
-        state: userSpot.state,
-        country: userSpot.country,
-        lat: parseFloat(userSpot.lat),
-        lng: parseFloat(userSpot.lng),
-        name: userSpot.name,
-        description: userSpot.description,
-        price: parseFloat(userSpot.price),
-        createdAt: userSpot.createdAt,
-        updatedAt: userSpot.updatedAt,
-        avgRating: parseFloat(userSpot.avgRating),
-        previewImage: userSpot.previewImage
-      }});
+      userSpot.lat = parseFloat(userSpot.lat);
+      userSpot.lng = parseFloat(userSpot.lng);
+      userSpot.price = parseFloat(userSpot.price);
+      res.json({Spots: userSpot});
 })
 router.get('/:spotId', async (req, res, next) => {
     let spotDetail;
