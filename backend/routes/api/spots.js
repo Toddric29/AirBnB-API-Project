@@ -128,10 +128,25 @@ router.get('/', async (req, res, next) => {
           delete jsonSpot.SpotImages
         return jsonSpot;
       });
-      spots.lat = parseFloat(spots.lat);
-      spots.lng = parseFloat(spots.lng);
-      spots.price = parseFloat(spots.price)
-      return res.json({Spots: spots});
+      let {id, ownerId, address, city, state, country, lat, lng, name, description,
+      price, createdAt, updatedAt, avgRating, previewImage } = spots
+      return res.json({Spots: {
+        id,
+        ownerId,
+        address,
+        city,
+        state,
+        country,
+        lat: parseFloat(lat),
+        lng: parseFloat(lng),
+        name,
+        description,
+        price: parseFloat(price),
+        createdAt,
+        updatedAt,
+        avgRating: parseFloat(avgRating),
+        previewImage
+      }});
   }
   if (req.query.page) {
     let {page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice} = req.query
@@ -234,10 +249,26 @@ router.get('/', async (req, res, next) => {
           delete jsonSpot.SpotImages
         return jsonSpot;
       });
-      filteredSpots.lat = parseFloat(filteredSpots.lat);
-      filteredSpots.lng = parseFloat(filteredSpots.lng);
-      filteredSpots.price = parseFloat(filteredSpots.price)
-      return res.json({Spots: filteredSpots, page, size});
+      let {id, ownerId, address, city, state, country, lat, lng, name, description,
+        price, createdAt, updatedAt, avgRating, previewImage } = filteredSpots
+
+      return res.json({Spots: {
+        id,
+        ownerId,
+        address,
+        city,
+        state,
+        country,
+        lat: parseFloat(lat),
+        lng: parseFloat(lng),
+        name,
+        description,
+        price: parseFloat(price),
+        createdAt,
+        updatedAt,
+        avgRating: parseFloat(avgRating),
+        previewImage
+      }, page, size});
   }
 })
 
@@ -279,10 +310,25 @@ router.get('/current',requireAuth, async (req, res, next) => {
           delete jsonSpot.SpotImages
         return jsonSpot;
       });
-      userSpot.lat = parseFloat(userSpot.lat);
-      userSpot.lng = parseFloat(userSpot.lng);
-      userSpot.price = parseFloat(userSpot.price);
-      res.json({Spots: userSpot});
+      let {id, ownerId, address, city, state, country, lat, lng, name, description,
+        price, createdAt, updatedAt, avgRating, previewImage } = userSpot
+      res.json({Spots: {
+        id,
+        ownerId,
+        address,
+        city,
+        state,
+        country,
+        lat: parseFloat(lat),
+        lng: parseFloat(lng),
+        name,
+        description,
+        price: parseFloat(price),
+        createdAt,
+        updatedAt,
+        avgRating: parseFloat(avgRating),
+        previewImage
+      }});
 })
 router.get('/:spotId', async (req, res, next) => {
     let spotDetail;
