@@ -130,14 +130,6 @@ router.get('/', async (req, res, next) => {
           delete jsonSpot.SpotImages
         return jsonSpot;
       });
-      spots = spots.map(spot => {
-        let {id, ownerId, address, city, state, country, lat, lng, name, description,
-          price, createdAt, updatedAt, avgRating, previewImage} = spot
-          parseFloat(spot.price)
-          parseFloat(spot.lat)
-          parseFloat(spot.lng)
-          return spot
-      })
       return res.json({
         Spots: spots
       });
@@ -244,14 +236,6 @@ router.get('/', async (req, res, next) => {
           delete jsonSpot.SpotImages
         return jsonSpot;
       });
-      filteredSpots = filteredSpots.map(filteredSpot => {
-        let {id, ownerId, address, city, state, country, lat, lng, name, description,
-          price, createdAt, updatedAt, avgRating, previewImage } = filteredSpot
-        parseInt(filteredSpot.price)
-        parseInt(filteredSpot.lat)
-        parseInt(filteredSpot.lng)
-        return filteredSpot
-      })
       return res.json({Spots: filteredSpots, page, size});
   }
 })
@@ -294,14 +278,6 @@ router.get('/current',requireAuth, async (req, res, next) => {
           delete jsonSpot.SpotImages
         return jsonSpot;
       });
-      userSpot = userSpot.map(spot => {
-        let {id, ownerId, address, city, state, country, lat, lng, name, description,
-          price, createdAt, updatedAt, avgRating, previewImage } = spot
-          parseInt(spot.price)
-          parseInt(spot.lat)
-          parseInt(spot.lng)
-          return userSpot
-      })
       res.json({
         Spots: userSpot});
 })
