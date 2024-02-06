@@ -112,12 +112,6 @@ router.get('/', async (req, res, next) => {
         group: [['Spot.id','ASC'],['Reviews.id'],['SpotImages.id']]
     })
 
-      spots = spots.map(spot => {
-        let {id, ownerId, address, city, state, country, lat, lng, name, description,
-          price, createdAt, updatedAt} = spot
-          parseFloat(spot.price, spot.lat, spot.lng)
-          return spot
-      })
     spots = spots.map(spot => {
         const jsonSpot = spot.toJSON();
         if (jsonSpot.Reviews[0]) {
@@ -136,6 +130,14 @@ router.get('/', async (req, res, next) => {
           delete jsonSpot.SpotImages
         return jsonSpot;
       });
+      spots = spots.map(spot => {
+        let {id, ownerId, address, city, state, country, lat, lng, name, description,
+          price, createdAt, updatedAt, avgRating, previewImage} = spot
+          parseFloat(spot.price)
+          parseFloat(spot.lat)
+          parseFloat(spot.lng)
+          return spot
+      })
       return res.json({
         Spots: spots
       });
@@ -224,14 +226,6 @@ router.get('/', async (req, res, next) => {
         message: 'No spots meet this criteria'
       })
     }
-    let {id, ownerId, address, city, state, country, lat, lng, name, description,
-      price, createdAt, updatedAt } = filteredSpots
-      filteredSpots = filteredSpots.map(filteredSpot => {
-        let {id, ownerId, address, city, state, country, lat, lng, name, description,
-          price, createdAt, updatedAt } = filteredSpot
-        parseInt(filteredSpot.price, filteredSpot.lat, filteredSpot.lng)
-        return filteredSpot
-      })
     filteredSpots = filteredSpots.map(filteredSpot => {
         const jsonSpot = filteredSpot.toJSON();
         parseInt(jsonSpot.price, jsonSpot.lat, jsonSpot.lng)
@@ -250,6 +244,14 @@ router.get('/', async (req, res, next) => {
           delete jsonSpot.SpotImages
         return jsonSpot;
       });
+      filteredSpots = filteredSpots.map(filteredSpot => {
+        let {id, ownerId, address, city, state, country, lat, lng, name, description,
+          price, createdAt, updatedAt, avgRating, previewImage } = filteredSpot
+        parseInt(filteredSpot.price)
+        parseInt(filteredSpot.lat)
+        parseInt(filteredSpot.lng)
+        return filteredSpot
+      })
       return res.json({Spots: filteredSpots, page, size});
   }
 })
@@ -275,13 +277,6 @@ router.get('/current',requireAuth, async (req, res, next) => {
         }],
         group: [['Spot.id'], ['Reviews.id'], ['SpotImages.id']]
     })
-      userSpot = userSpot.map(spot => {
-        let {id, ownerId, address, city, state, country, lat, lng, name, description,
-          price, createdAt, updatedAt } = spot
-          parseInt(spot.price, spot.lat, spot.lng)
-          return userSpot
-      })
-
     userSpot = userSpot.map(spot => {
         const jsonSpot = spot.toJSON();
         if (jsonSpot.Reviews[0]) {
@@ -299,6 +294,14 @@ router.get('/current',requireAuth, async (req, res, next) => {
           delete jsonSpot.SpotImages
         return jsonSpot;
       });
+      userSpot = userSpot.map(spot => {
+        let {id, ownerId, address, city, state, country, lat, lng, name, description,
+          price, createdAt, updatedAt, avgRating, previewImage } = spot
+          parseInt(spot.price)
+          parseInt(spot.lat)
+          parseInt(spot.lng)
+          return userSpot
+      })
       res.json({
         Spots: userSpot});
 })
