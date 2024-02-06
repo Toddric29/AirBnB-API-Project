@@ -133,20 +133,20 @@ router.get('/', async (req, res, next) => {
       });
       return res.json({Spots: {
         id: parseInt(spots.id),
-        ownerId,
-        address,
-        city,
-        state,
-        country,
-        lat: parseFloat(lat),
-        lng: parseFloat(lng),
-        name,
-        description,
-        price: parseFloat(price),
-        createdAt,
-        updatedAt,
-        avgRating: parseFloat(avgRating),
-        previewImage
+        ownerId: parseInt(spots.ownerId),
+        address: spots.address,
+        city: spots.city,
+        state: spots.state,
+        country: spots.country,
+        lat: parseFloat(spots.lat),
+        lng: parseFloat(spots.lng),
+        name: spots.name,
+        description: spots.description,
+        price: parseFloat(spots.price),
+        createdAt: spots.createdAt,
+        updatedAt: spots.updatedAt,
+        avgRating: parseFloat(spots.avgRating),
+        previewImage: spots.previewImage
       }});
   }
   if (req.query.page) {
@@ -255,20 +255,20 @@ router.get('/', async (req, res, next) => {
       });
       return res.json({Spots: {
         id: parseInt(filteredSpots.id),
-        ownerId,
-        address,
-        city,
-        state,
-        country,
-        lat: parseFloat(lat),
-        lng: parseFloat(lng),
-        name,
-        description,
-        price: parseFloat(price),
-        createdAt,
-        updatedAt,
-        avgRating: parseFloat(avgRating),
-        previewImage
+        ownerId: parseInt(filteredSpots.ownerId),
+        address: filteredSpots.address,
+        city: filteredSpots.city,
+        state: filteredSpots.state,
+        country: filteredSpots.country,
+        lat: parseFloat(filteredSpots.lat),
+        lng: parseFloat(filteredSpots.lng),
+        name: filteredSpots.name,
+        description: filteredSpots.description,
+        price: parseFloat(filteredSpots.price),
+        createdAt: filteredSpots.createdAt,
+        updatedAt: filteredSpots.updatedAt,
+        avgRating: parseFloat(filteredSpots.avgRating),
+        previewImage: filteredSpots.previewImage
       }, page, size});
   }
 })
@@ -316,20 +316,20 @@ router.get('/current',requireAuth, async (req, res, next) => {
       });
       res.json({Spots: {
         id: parseInt(userSpot.id),
-        ownerId,
-        address,
-        city,
-        state,
-        country,
-        lat: parseFloat(lat),
-        lng: parseFloat(lng),
-        name,
-        description,
-        price: parseFloat(price),
-        createdAt,
-        updatedAt,
-        avgRating: parseFloat(avgRating),
-        previewImage
+        ownerId: parseInt(userSpot.ownerId),
+        address: userSpot.address,
+        city: userSpot.city,
+        state: userSpot.state,
+        country: userSpot.country,
+        lat: parseFloat(userSpot.lat),
+        lng: parseFloat(userSpot.lng),
+        name: userSpot.name,
+        description: userSpot.description,
+        price: parseFloat(userSpot.price),
+        createdAt: userSpot.createdAt,
+        updatedAt: userSpot.updatedAt,
+        avgRating: parseFloat(userSpot.avgRating),
+        previewImage: userSpot.previewImage
       }});
 })
 router.get('/:spotId', async (req, res, next) => {
