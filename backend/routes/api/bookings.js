@@ -52,10 +52,6 @@ router.put('/:bookingId', requireAuth, async (req, res, next) => {
     let updatedBooking;
     updatedBooking = await Booking.findByPk(
         req.params.bookingId
-        // limit: 1,
-        // attributes: {
-        //     include: ['id']
-        // }
     )
     if (updatedBooking === null) {
         return res
