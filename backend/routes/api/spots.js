@@ -130,7 +130,7 @@ router.get('/', async (req, res, next) => {
       });
       let {id, ownerId, address, city, state, country, lat, lng, name, description,
       price, createdAt, updatedAt, avgRating, previewImage } = spots
-      return res.json({Spots:
+      return res.json({
         id,
         ownerId,
         address,
@@ -252,7 +252,7 @@ router.get('/', async (req, res, next) => {
       let {id, ownerId, address, city, state, country, lat, lng, name, description,
         price, createdAt, updatedAt, avgRating, previewImage } = filteredSpots
 
-      return res.json({Spots:
+      return res.json({
         id,
         ownerId,
         address,
@@ -312,7 +312,7 @@ router.get('/current',requireAuth, async (req, res, next) => {
       });
       let {id, ownerId, address, city, state, country, lat, lng, name, description,
         price, createdAt, updatedAt, avgRating, previewImage } = userSpot
-      res.json({Spots:
+      res.json({
         id,
         ownerId,
         address,
