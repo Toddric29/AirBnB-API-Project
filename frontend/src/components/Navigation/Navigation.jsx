@@ -8,11 +8,11 @@ function Navigation({ isLoaded }) {
 
   return (
     <ul>
-      <li>
+      <li className='Home'>
         <NavLink to="/">Home</NavLink>
       </li>
       {isLoaded && (
-        <li>
+        <li className='profile-button'>
           <ProfileButton user={sessionUser} />
         </li>
       )}
