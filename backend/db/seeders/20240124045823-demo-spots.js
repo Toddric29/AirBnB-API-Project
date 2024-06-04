@@ -51,11 +51,11 @@ const spots = [
     city: 'Compton',
     state: 'CA',
     country: 'USA',
-    lat: 65,
-    lng: -3,
-    name: 'Bunker',
-    description: 'Somewhere you"ll feel safe',
-    price: 400
+    lat: 62,
+    lng: -8,
+    name: 'Bunk',
+    description: 'Somewhere you"ll feel comfortable',
+    price: 350
   }
 ]
 

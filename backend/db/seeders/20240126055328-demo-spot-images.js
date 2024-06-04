@@ -15,7 +15,7 @@ const spotImages = [
     address: '3256 Auckland Blvd'
   },
   {
-    url: 'airbnb.co/234',
+    url: '../../../images/compton2.jpeg',
     preview: true,
     address: '7845 Red St'
   },
