@@ -1,4 +1,5 @@
 const LOAD_SPOTS = 'spots/loadSpots'
+const LOAD_SPOT = 'spots/loadSpot'
 
 const loadSpots = (payload) => {
     return {
@@ -7,6 +8,10 @@ const loadSpots = (payload) => {
     }
 }
 
+const loadSpot = spot => ({
+    type: LOAD_SPOT,
+    spot
+})
 export const fetchSpots = () => async(dispatch) => {
     const res = await fetch('/api/spots')
 
@@ -15,16 +20,17 @@ export const fetchSpots = () => async(dispatch) => {
         dispatch(loadSpots(data.Spots))
     }
 };
+const initialState = { allSpots: {}, spotDetails: {} };
 
 export const fetchSpotDetails = (spotId) => async (dispatch) => {
     const res = await fetch(`/api/spots/${spotId}`);
 
     if (res.ok) {
         const details = await res.json();
-        dispatch(loadSpots(details));
+        dispatch(loadSpot(details));
     }
 };
-const initialState = { allSpots: {}, spotDetails: {} };
+
 
 const spotsReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -36,6 +42,15 @@ const spotsReducer = (state = initialState, action) => {
         return {
             ...state,
             allSpots
+        }
+    }
+    case LOAD_SPOT: {
+        return {
+            ...state,
+            [action.spot.id]: {
+                ...state[action.spot.id],
+                ...action.spot
+            }
         }
     }
     default:

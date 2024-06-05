@@ -1,15 +1,16 @@
-import './AllSpots.css';
+import './SpotDetails.css';
 import { fetchSpotDetails } from '../../store/spots';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 
-const SpotDetail = () => {
+const SpotDetails = () => {
     const dispatch = useDispatch()
     const { spotId } = useParams();
-    const spot = useSelector(state => state.spot[spotId]);
+    const spot = useSelector(state => state.spotDetails[spotId]);
     useEffect(() => {
         dispatch(fetchSpotDetails(spotId))
-    },[spotId])
+    }, [spotId, dispatch])
 
     return (
         <div>
@@ -41,4 +42,4 @@ const SpotDetail = () => {
     )
 }
 
-export default SpotDetail
+export default SpotDetails
