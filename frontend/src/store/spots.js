@@ -14,12 +14,21 @@ export const fetchSpots = () => async(dispatch) => {
         const data = await res.json()
         dispatch(loadSpots(data.Spots))
     }
-}
+};
+
+export const fetchSpotDetails = (spotId) => async (dispatch) => {
+    const res = await fetch(`/api/spots/${spotId}`);
+
+    if (res.ok) {
+        const details = await res.json();
+        dispatch(loadSpots(details));
+    }
+};
 const initialState = { allSpots: {}, spotDetails: {} };
 
 const spotsReducer = (state = initialState, action) => {
   switch (action.type) {
-    case LOAD_SPOTS:
+    case LOAD_SPOTS:{
         // console.log(action)
         const allSpots = {...state.allSpots}
         action.payload.forEach(spot => allSpots[spot.id]=spot)
@@ -28,8 +37,11 @@ const spotsReducer = (state = initialState, action) => {
             ...state,
             allSpots
         }
+    }
     default:
-      return state;
+      {
+        return state;
+    }
   }
 };
 
