@@ -16,7 +16,7 @@ const AllSpots = () => {
             <nav>
             {Object.values(spots).map(spot => {
                 return (
-                    <NavLink key={spot.name} to={`/api/spots/${spot.id}`}>
+                    <NavLink key={spot.name} to={`/spots/${spot.id}`}>
                     <div key={spot.id}>
                     <h3>{spot.name}</h3>
                     <img src={spot.previewImage}/>

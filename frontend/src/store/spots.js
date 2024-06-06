@@ -1,3 +1,5 @@
+import { csrfFetch } from "./csrf"
+
 const LOAD_SPOTS = 'spots/loadSpots'
 const LOAD_SPOT = 'spots/loadSpot'
 
@@ -8,12 +10,12 @@ const loadSpots = (payload) => {
     }
 }
 
-const loadSpot = spot => ({
+const loadSpot = (payload) => ({
     type: LOAD_SPOT,
-    spot
+    payload
 })
 export const fetchSpots = () => async(dispatch) => {
-    const res = await fetch('/api/spots')
+    const res = await csrfFetch('/api/spots')
 
     if (res.ok) {
         const data = await res.json()
@@ -23,7 +25,7 @@ export const fetchSpots = () => async(dispatch) => {
 const initialState = { allSpots: {}, spotDetails: {} };
 
 export const fetchSpotDetails = (spotId) => async (dispatch) => {
-    const res = await fetch(`/api/spots/${spotId}`);
+    const res = await csrfFetch(`/api/spots/${spotId}`);
 
     if (res.ok) {
         const details = await res.json();
@@ -35,23 +37,18 @@ export const fetchSpotDetails = (spotId) => async (dispatch) => {
 const spotsReducer = (state = initialState, action) => {
   switch (action.type) {
     case LOAD_SPOTS:{
-        // console.log(action)
+        console.log(action, action.spot)
         const allSpots = {...state.allSpots}
         action.payload.forEach(spot => allSpots[spot.id]=spot)
-        // console.log(allSpots)
         return {
             ...state,
             allSpots
         }
     }
     case LOAD_SPOT: {
-        return {
-            ...state,
-            [action.spot.id]: {
-                ...state[action.spot.id],
-                ...action.spot
-            }
-        }
+        const spotDetails = {...state.spotDetails}
+        spotDetails[action.payload.id] = action.payload
+        return {...state, spotDetails}
     }
     default:
       {

@@ -1,18 +1,20 @@
 import './SpotDetails.css';
 import { fetchSpotDetails } from '../../store/spots';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
 const SpotDetails = () => {
+    const [isLoaded, setIsLoaded] = useState(false)
     const dispatch = useDispatch()
     const { spotId } = useParams();
-    const spot = useSelector(state => state.spotDetails[spotId]);
+    const spot = useSelector(state => state.spots.spotDetails[spotId]);
+    console.log(spot)
     useEffect(() => {
-        dispatch(fetchSpotDetails(spotId))
+        dispatch(fetchSpotDetails(spotId)).then(() => setIsLoaded(true));
     }, [spotId, dispatch])
 
-    return (
+    return isLoaded ? (
         <div>
             <div>
             <h3>{spot.name}</h3>
@@ -38,6 +40,10 @@ const SpotDetails = () => {
                     <h2>{spot.avgRating}</h2>
                 </div>
             </div>
+        </div>
+    ) : (
+        <div>
+            LOADING
         </div>
     )
 }
