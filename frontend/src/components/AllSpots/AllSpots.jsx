@@ -26,7 +26,6 @@ const AllSpots = () => {
                 </div>
                     </NavLink>
                 )
-
                 })}
             </nav>
         </main>
