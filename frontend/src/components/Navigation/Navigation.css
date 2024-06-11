@@ -1,3 +1,7 @@
 .Home {
     display: flex;
 }
+
+.hidden {
+    display: none
+}
