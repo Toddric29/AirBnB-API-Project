@@ -1,7 +1,7 @@
 import './AllSpots.css';
 import { fetchSpots } from '../../store/spots';
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useEffect} from 'react';
+import { useDispatch, useSelector} from 'react-redux';
 import { NavLink} from 'react-router-dom';
 
 const AllSpots = () => {

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { createSpot } from '../../store/spots';
@@ -140,7 +140,7 @@ const CreateSpotForm = ({ hideForm }) => {
           required
           value={link}
           onChange={updateLink} />
-        <button type="submit">Create new Pokemon</button>
+        <button type="submit">Create new Spot</button>
         <button type="button" onClick={handleCancelClick}>Cancel</button>
       </form>
     </section>

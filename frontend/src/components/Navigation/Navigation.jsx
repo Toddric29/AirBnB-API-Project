@@ -1,7 +1,6 @@
 import { NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import ProfileButton from './ProfileButton';
-import CreateSpot from './CreateSpot';
 import './Navigation.css';
 
 function Navigation({ isLoaded }) {
@@ -11,7 +10,7 @@ function Navigation({ isLoaded }) {
     <ul>
       <li>
         <NavLink to="/">Home</NavLink>
-        <NavLink to="/">Create a Spot</NavLink>
+        <NavLink to="/spots/new">Create a Spot</NavLink>
       </li>
       {isLoaded && (
         <li>

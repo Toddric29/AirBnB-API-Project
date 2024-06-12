@@ -4,6 +4,7 @@ const LOAD_SPOTS = 'spots/loadSpots'
 const LOAD_SPOT = 'spots/loadSpot'
 const NEW_SPOT = 'spots/newSpot'
 
+
 const loadSpots = (payload) => {
     return {
         type: LOAD_SPOTS,
@@ -57,6 +58,7 @@ export const createSpot = (payload) => async (dispatch) => {
     }
     return res
 }
+
 const spotsReducer = (state = initialState, action) => {
   switch (action.type) {
     case LOAD_SPOTS:{

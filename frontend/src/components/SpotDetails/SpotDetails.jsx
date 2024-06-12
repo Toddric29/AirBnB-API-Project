@@ -44,7 +44,8 @@ const SpotDetails = () => {
                 </div>
             </div>
             <div>
-            <h2>{spot.numReviews || 'New'}</h2>
+            <h2>{`${spot.numReviews} review(s)`|| 'New'}</h2>
+            <button>Post Your Review</button>
             <div>
             {Object.values(reviews).map(review => {
                 return (
