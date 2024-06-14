@@ -4,11 +4,14 @@ import { fetchReviews } from '../../store/reviews';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import PostReviewModal from '../PostReviewModal/PostReviewModal';
+import { useModal } from '../../context/Modal';
 
 const SpotDetails = () => {
     const [isLoaded, setIsLoaded] = useState(false)
     const dispatch = useDispatch()
     const { spotId } = useParams();
+    const {setModalContent} = useModal();
     const spot = useSelector(state => state.spots.spotDetails[spotId]);
     const reviews = useSelector(state => state.reviews);
     console.log(spot, reviews)
@@ -45,7 +48,7 @@ const SpotDetails = () => {
             </div>
             <div>
             <h2>{`${spot.numReviews} review(s)`|| 'New'}</h2>
-            <button>Post Your Review</button>
+            <button onClick={() => setModalContent(<PostReviewModal spotId = {spotId}/>)}>Post Your Review</button>
             <div>
             {Object.values(reviews).map(review => {
                 return (
@@ -64,33 +67,4 @@ const SpotDetails = () => {
     )
 }
 
-
-// const ReviewDetails = () => {
-//     const [isLoaded, setIsLoaded] = useState(false)
-//     const dispatch = useDispatch()
-//     const { reviewId } = useParams();
-//     const reviews = useSelector(state => state.spots.reviews[reviewId]);
-//     console.log(reviews)
-//     useEffect(() => {
-//         dispatch(fetchReviews(spotId)).then(() => setIsLoaded(true));
-//     }, [spotId, dispatch])
-
-//     return isLoaded ? (
-//         <main>
-//             {Object.values(reviews).map(review => {
-//                 return (
-//                     <div key={review.id}>
-//                     <h3>{review.firstName}</h3>
-//                     <h4>{review.createdAt}</h4>
-//                     <h4>{review.review}</h4>
-//                 </div>
-//                 )
-//                 })}
-//         </main>
-//     ) : (
-//         <div>
-//             LOADING
-//         </div>
-//     )
-// }
 export default SpotDetails

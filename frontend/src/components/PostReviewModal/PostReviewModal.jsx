@@ -1,27 +1,39 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useModal } from '../../context/Modal';
-import * as sessionActions from '../../store/session';
+import * as reviewActions from '../../store/reviews';
 import './PostReview.css';
 
-const PostReviewModal = ({ spotId }) => {
+const PostReviewModal= ({spotId}) => {
     const { closeModal } = useModal();
       const dispatch = useDispatch();
       const [review, setReview] = useState("")
       const [stars, setStars] = useState(0);
-      const [hover, setHover] = useState(0);
+      const [errors, setErrors] = useState({});
+
 
       const handleSubmit = async (e) => {
           e.preventDefault()
-
-          const payload = {
-              review,
-              stars
+          if (review) {
+            setErrors({});
+            console.log(review, stars, spotId)
+            return dispatch(reviewActions.addNewReview(spotId,{
+                  review,
+                  stars
+              })
+            )
+            .then(closeModal)
+            .catch(async (res) => {
+              const data = await res.json();
+            //   console.log(data)
+              if (data?.errors) {
+                  setErrors(data.errors)
+              }
+            });
           }
-          const newReview = await dispatch(fetchNewReview(spotId, payload))
-          closeModal()
-
-          return console.log(newReview)
+          return setErrors({
+            review: "Review can't be blank"
+          })
       }
 
       return (

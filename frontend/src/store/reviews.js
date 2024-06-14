@@ -24,7 +24,6 @@ export const fetchReviews = (spotId) => async(dispatch) => {
 }
 
 export const addNewReview = (spotId, payload) => async (dispatch) => {
-  try {
     const res = await csrfFetch(`/api/spots/${spotId}/reviews`, {
       method: "POST",
       headers: {
@@ -37,9 +36,7 @@ export const addNewReview = (spotId, payload) => async (dispatch) => {
       dispatch(newReview(data));
       return data;
     }
-  } catch (err) {
-    console.error("Could not create review", err);
-  }
+    console.log(spotId)
 };
 
 const initialState = {};
