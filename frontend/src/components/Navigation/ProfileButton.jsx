@@ -5,6 +5,7 @@ import * as sessionActions from '../../store/session';
 import OpenModalMenuItem from './OpenModalMenuItem';
 import LoginFormModal from '../LoginFormModal/LoginFormModal';
 import SignupFormModal from '../SignupFormModal/SignupFormModal';
+import * as spotActions from '../../store/spots'
 
 function ProfileButton({ user }) {
   const dispatch = useDispatch();
@@ -38,6 +39,11 @@ function ProfileButton({ user }) {
     closeMenu();
   };
 
+  const mySpots = () => {
+    dispatch (spotActions.fetchMySpots());
+    closeMenu();
+  }
+
   const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
 
   return (
@@ -51,6 +57,9 @@ function ProfileButton({ user }) {
             <li>{user.username}</li>
             <li>{user.firstName} {user.lastName}</li>
             <li>{user.email}</li>
+            <li>
+              <button onClick={mySpots}>Manage Spots</button>
+            </li>
             <li>
               <button onClick={logout}>Log Out</button>
             </li>

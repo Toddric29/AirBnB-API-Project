@@ -3,6 +3,7 @@ import { csrfFetch } from "./csrf"
 const LOAD_SPOTS = 'spots/loadSpots'
 const LOAD_SPOT = 'spots/loadSpot'
 const NEW_SPOT = 'spots/newSpot'
+const MY_SPOTS = 'spots/mySpot'
 
 
 const loadSpots = (payload) => {
@@ -22,6 +23,11 @@ const newSpot = (payload) => ({
     payload
 });
 
+const mySpot = (payload) => ({
+    type: MY_SPOTS,
+    payload
+})
+
 export const fetchSpots = () => async(dispatch) => {
     const res = await csrfFetch('/api/spots')
 
@@ -30,7 +36,7 @@ export const fetchSpots = () => async(dispatch) => {
         dispatch(loadSpots(data.Spots))
     }
 };
-const initialState = { allSpots: {}, spotDetails: {} };
+const initialState = { allSpots: {}, spotDetails: {}, mySpots: {} };
 
 export const fetchSpotDetails = (spotId) => async (dispatch) => {
     const res = await csrfFetch(`/api/spots/${spotId}`);
@@ -59,10 +65,18 @@ export const createSpot = (payload) => async (dispatch) => {
     return res
 }
 
+export const fetchMySpots = () => async (dispatch) => {
+    const res = await csrfFetch('/api/spots/current');
+    if (res.ok) {
+        const data = await res.json();
+        console.log(data)
+        dispatch(mySpot(data))
+    }
+    return res
+}
 const spotsReducer = (state = initialState, action) => {
   switch (action.type) {
     case LOAD_SPOTS:{
-        console.log(action, action.spot)
         const allSpots = {...state.allSpots}
         action.payload.forEach(spot => allSpots[spot.id]=spot)
         return {
@@ -74,6 +88,12 @@ const spotsReducer = (state = initialState, action) => {
         const spotDetails = {...state.spotDetails}
         spotDetails[action.payload.id] = action.payload
         return {...state, spotDetails}
+    }
+    case MY_SPOTS: {
+        const mySpots = {...state.mySpots}
+        console.log(action)
+        mySpots[action.payload.id] = action.payload
+        return {...state, mySpots: action.payload.Spots}
     }
     case NEW_SPOT: {
         if (!state[action.spot.id]) {

@@ -14,7 +14,7 @@ const SpotDetails = () => {
     const {setModalContent} = useModal();
     const spot = useSelector(state => state.spots.spotDetails[spotId]);
     const reviews = useSelector(state => state.reviews);
-    console.log(spot, reviews)
+    // console.log(spot, reviews)
     useEffect(() => {
         dispatch(fetchSpotDetails(spotId)).then(() => setIsLoaded(true));
         dispatch(fetchReviews(spotId)).then(() => setIsLoaded(true));
