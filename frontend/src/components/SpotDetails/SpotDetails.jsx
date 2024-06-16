@@ -26,11 +26,9 @@ const SpotDetails = () => {
             <h3>{spot.name}</h3>
             <p>{`${spot.city}, ${spot.state}, ${spot.country}`}</p>
             </div>
+            <img src={spot.SpotImages[0].url}/>
             <div>
-                <img src={spot.previewImage}/>
-            </div>
-            <div>
-                <h4>{`Hosted by ${spot.firstName} ${spot.lastName}`}</h4>
+                <h4>{`Hosted by ${spot.Owner.firstName} ${spot.Owner.lastName}`}</h4>
             </div>
             <div>
                 <p>{spot.description}</p>
@@ -38,12 +36,13 @@ const SpotDetails = () => {
             <div>
                 <div>
                     <h3>{`$${spot.price} night`}</h3>
-                    <p>{spot.avgStarRating || 'New'}</p>
+                    <p>{`${spot.avgStarRating} ★ Rating` || 'New'}</p>
+                    <p>{`${spot.numReviews} review(s)`}</p>
                 </div>
             </div>
             <div>
                 <div>
-                    <h2>{spot.avgStarRating || 'New'}</h2>
+                    <h2>{`${spot.avgStarRating} ★ Rating` || 'New'}</h2>
                 </div>
             </div>
             <div>
@@ -51,8 +50,14 @@ const SpotDetails = () => {
             <button onClick={() => setModalContent(<PostReviewModal spotId = {spotId}/>)}>Post Your Review</button>
             <div>
             {Object.values(reviews).map(review => {
+                // console.log(review.User.firstName, '<---- Review')
                 return (
                     <div key={review.id}>
+                    <h3>{review.User.firstName}</h3>
+                    <h3>{new Date(Date.parse(review.updatedAt)).toLocaleString("en-US", {
+                        month: 'long',
+                        year: 'numeric'
+                    })}</h3>
                     <h3>{review.review}</h3>
                 </div>
                 )

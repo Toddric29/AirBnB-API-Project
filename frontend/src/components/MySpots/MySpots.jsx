@@ -1,21 +1,36 @@
 import './MySpots.css';
 import { fetchMySpots } from '../../store/spots';
-import { useEffect} from 'react';
+import { useEffect, useState} from 'react';
 import { useDispatch, useSelector} from 'react-redux';
-import { NavLink} from 'react-router-dom';
+import { NavLink, useNavigate} from 'react-router-dom';
+import EditSpotForm from '../UpdateSpots/UpdateSpot';
+import { useParams } from 'react-router-dom';
+// import * as spotActions from '../../store/spots'
+import { editSpot, removeSpot } from '../../store/spots';
 
 const MySpots = () => {
     const dispatch = useDispatch()
-    const spots = useSelector((state) => state.spots.mySpots)
+    const navigate = useNavigate();
+    const spots = useSelector((state) => state.spots.mySpots);
     console.log(spots)
     useEffect(() => {
         dispatch(fetchMySpots())
     }, [dispatch])
+
+
+    const editSpots = (spotId) => {
+        navigate(`/spots/${spotId}/edit`)
+        }
+    const deleteSpot = (spotId) => {
+        dispatch(removeSpot(spotId)).then(() => navigate('/'))
+    }
+
     return (
         <main>
-            <nav>
+            <div>
             {Object.values(spots).map(spot => {
                 return (
+                    <div key={spot.city}>
                     <NavLink key={spot.name} to={`/spots/${spot.id}`}>
                     <div key={spot.id}>
                     <h3>{spot.name}</h3>
@@ -25,9 +40,14 @@ const MySpots = () => {
                     <h4>{`$${spot.price} night`}</h4>
                 </div>
                     </NavLink>
+                    <div key={spot.id}>
+                    <button onClick={e => editSpots(spot.id)}>Update</button>
+                    <button onClick={e => deleteSpot(spot.id)}>Delete</button>
+                    </div>
+                    </ div>
                 )
                 })}
-            </nav>
+            </div>
         </main>
     )
 }

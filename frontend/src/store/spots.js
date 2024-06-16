@@ -4,6 +4,7 @@ const LOAD_SPOTS = 'spots/loadSpots'
 const LOAD_SPOT = 'spots/loadSpot'
 const NEW_SPOT = 'spots/newSpot'
 const MY_SPOTS = 'spots/mySpot'
+const REMOVE_SPOT = 'spots/removeSpot'
 
 
 const loadSpots = (payload) => {
@@ -28,6 +29,12 @@ const mySpot = (payload) => ({
     payload
 })
 
+export const removeSpot = (payload) => ({
+    type: REMOVE_SPOT,
+    payload
+})
+
+
 export const fetchSpots = () => async(dispatch) => {
     const res = await csrfFetch('/api/spots')
 
@@ -45,6 +52,7 @@ export const fetchSpotDetails = (spotId) => async (dispatch) => {
         const details = await res.json();
         dispatch(loadSpot(details));
     }
+    return res
 };
 
 
@@ -74,6 +82,23 @@ export const fetchMySpots = () => async (dispatch) => {
     }
     return res
 }
+
+export const editSpot = (payload, spotId) => async dispatch => {
+    console.log(payload, '<--- Payload')
+    const res = await csrfFetch(`/api/spots/${spotId}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+    })
+    if (res.ok) {
+        const edittedSpot = await res.json();
+        dispatch(newSpot(edittedSpot))
+        return edittedSpot;
+    }
+};
+
 const spotsReducer = (state = initialState, action) => {
   switch (action.type) {
     case LOAD_SPOTS:{
@@ -96,14 +121,21 @@ const spotsReducer = (state = initialState, action) => {
         return {...state, mySpots: action.payload.Spots}
     }
     case NEW_SPOT: {
-        if (!state[action.spot.id]) {
+        console.log(action)
+        if (!state[action.id]) {
             const newState = {
                 ...state,
-                [action.spot.id]: action.spot
+                [action.id]: action
             }
             return newState
         }
         return {...state}
+    }
+    case REMOVE_SPOT: {
+        const id = action.payload;
+        const newState = {...state };
+        delete newState[id];
+        return {newState}
     }
     default:
       {

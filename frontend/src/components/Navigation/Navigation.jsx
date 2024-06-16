@@ -9,7 +9,7 @@ function Navigation({ isLoaded }) {
   return (
     <ul>
       <li>
-        <NavLink to="/">Home</NavLink>
+        <NavLink to="/"><img src='https://cdn.freebiesupply.com/logos/large/2x/airbnb-2-logo-png-transparent.png'/></NavLink>
         <NavLink to="/spots/new">Create a Spot</NavLink>
       </li>
       {isLoaded && (

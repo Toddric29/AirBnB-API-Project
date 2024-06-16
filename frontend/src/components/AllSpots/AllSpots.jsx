@@ -21,7 +21,7 @@ const AllSpots = () => {
                     <h3>{spot.name}</h3>
                     <img src={spot.previewImage}/>
                     <h4>{`${spot.city}, ${spot.state}`}</h4>
-                    <h4>{spot.avgRating || 'New'}</h4>
+                    <h4>{`${spot.avgRating} ★ Rating` || 'New'}</h4>
                     <h4>{`$${spot.price} night`}</h4>
                 </div>
                     </NavLink>
