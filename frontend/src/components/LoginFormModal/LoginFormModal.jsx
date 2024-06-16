@@ -2,6 +2,7 @@ import { useState } from 'react';
 import * as sessionActions from '../../store/session';
 import { useDispatch } from 'react-redux';
 import { useModal } from '../../context/Modal';
+import { NavLink } from 'react-router-dom';
 import './LoginForm.css';
 
 function LoginFormModal() {
@@ -23,7 +24,12 @@ function LoginFormModal() {
         }
       });
   };
-
+  const handleDemo = (e) => {
+    e.preventDefault()
+    setCredential('demo@user.io')
+    setPassword('password')
+  }
+console.log(errors)
   return (
     <>
       <h1>Log In</h1>
@@ -49,7 +55,12 @@ function LoginFormModal() {
         {errors.credential && (
           <p>{errors.credential}</p>
         )}
-        <button type="submit">Log In</button>
+        <button disabled={credential.length < 4 || password.length < 6}type="submit">Log In</button>
+      </form>
+      <form onSubmit={handleDemo}>
+        <div>
+          <button className='Demo'type="submit">Demo User</button>
+        </div>
       </form>
     </>
   );
