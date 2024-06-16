@@ -13,19 +13,19 @@ const reviews = [
     review: 'This place was chill',
     stars: 4,
     address: '3256 Auckland Blvd',
-    email: 'user1@user.io'
+    email: 'user2@user.io'
   },
   {
     review: 'This place was awesome',
     stars: 5,
     address: '7845 Red St',
-    email: 'user2@user.io'
+    email: 'demo@user.io'
   },
   {
     review: 'This place sucked',
     stars: 1,
     address: '9786 Twinlake Ave',
-    email: 'demo@user.io'
+    email: 'user1@user.io'
   }
 ]
 

@@ -10,19 +10,24 @@ if (process.env.NODE_ENV === 'production') {
 
 const spotImages = [
   {
-    url: 'airbnb.co/1234',
+    url: 'https://listing-images.homejunction.com/heartland/HMS44887495/photo_2.jpg',
     preview: true,
     address: '3256 Auckland Blvd'
   },
   {
-    url: '../../../images/compton2.jpeg',
+    url: 'https://photos.zillowstatic.com/fp/231d544176e559f89fa3002353c6ed4e-cc_ft_1536.webp',
     preview: true,
     address: '7845 Red St'
   },
   {
-    url: 'airbnb.co/134',
+    url: 'https://photos.zillowstatic.com/fp/8b604bc5ad2bc5659baf0ccce53033a9-cc_ft_1536.webp',
     preview: true,
     address: '9786 Twinlake Ave'
+  },
+  {
+    url: 'https://photos.zillowstatic.com/fp/4a02fa9e28b51d2d4dc42ab603160d30-cc_ft_1536.webp',
+    preview: true,
+    address: '7850 Red St'
   }
 ]
 
