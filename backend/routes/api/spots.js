@@ -287,12 +287,14 @@ router.get('/:spotId', async (req, res, next) => {
         where: {
             id: req.params.spotId
         },
-        include: [{
-            model: Review,
-            required: false,
-            attributes: [[Sequelize.fn('COUNT', Sequelize.col('review')),'numReviews'],
-            [Sequelize.fn('AVG', Sequelize.col('stars')),'avgStarRating']]
-        }, {
+        include: [
+        //   {
+        //     model: Review,
+        //     required: false,
+        //     attributes: [[Sequelize.fn('COUNT', Sequelize.col('review')),'numReviews'],
+        //     [Sequelize.fn('AVG', Sequelize.col('stars')),'avgStarRating']]
+        // },
+         {
             model: User,
             as: "Owner",
             required: false,
@@ -303,24 +305,20 @@ router.get('/:spotId', async (req, res, next) => {
             required: false,
             attributes: ['id','url','preview']
         }],
-        group: [['Spot.id'],['Reviews.id'],['Owner.id'],['SpotImages.id']]
+        // group: [['Spot.id'],['Reviews.id'],['Owner.id'],['SpotImages.id']]
     })
+
     if (spotDetail === null) return res.status(404).json({
       message: "Spot couldn't be found"
     });
+    const reviewCount = await spotDetail.countReviews()
+    const reviewSum = await Review.sum('stars', {where: {spotId: req.params.spotId}})
         const jsonSpot = spotDetail.toJSON();
+        jsonSpot.numReviews = reviewCount===0 ? null : reviewCount
+        jsonSpot.avgStarRating = reviewCount === 0 ? null : (reviewSum / reviewCount)
         spotDetail.lat = parseFloat(spotDetail.lat);
         spotDetail.lng = parseFloat(spotDetail.lng);
         spotDetail.price = parseFloat(spotDetail.price);
-        if (jsonSpot.Reviews[0]) {
-          jsonSpot.avgStarRating = parseFloat(jsonSpot.Reviews[0].avgStarRating);
-          jsonSpot.numReviews = parseInt(jsonSpot.Reviews[0].numReviews);
-        }
-        else {
-          jsonSpot.avgStarRating = null;
-          jsonSpot.numReviews = null;
-        }
-        delete jsonSpot.Reviews
       res.json(jsonSpot);
 });
 router.get('/:spotId/reviews', async (req, res, next) => {
@@ -450,6 +448,7 @@ router.post('/:spotId/reviews', requireAuth, validateReview, async (req, res, ne
                 message: "User already has a review for this spot"})
         }
         else {
+          console.log(err.message)
             res.status(500).json({
             message: err.message
         })
