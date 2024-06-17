@@ -1,12 +1,10 @@
 import './MySpots.css';
 import { fetchMySpots } from '../../store/spots';
-import { useEffect, useState} from 'react';
+import { useEffect} from 'react';
 import { useDispatch, useSelector} from 'react-redux';
 import { NavLink, useNavigate} from 'react-router-dom';
-import EditSpotForm from '../UpdateSpots/UpdateSpot';
-import { useParams } from 'react-router-dom';
 // import * as spotActions from '../../store/spots'
-import { editSpot, removeSpot } from '../../store/spots';
+import { removeSpot } from '../../store/spots';
 
 const MySpots = () => {
     const dispatch = useDispatch()

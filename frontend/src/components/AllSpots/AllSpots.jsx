@@ -15,13 +15,22 @@ const AllSpots = () => {
         <main>
             <nav>
             {Object.values(spots).map(spot => {
+                let rating = '★ '
+                if (spot.avgRating === null) {
+                    spot.avgRating = 'New'
+                }
+                if (spot.avgRating === 'New') {
+                    rating = ''
+                }
                 return (
                     <NavLink key={spot.name} to={`/spots/${spot.id}`}>
                     <div key={spot.id}>
                     <h3>{spot.name}</h3>
-                    <img src={spot.previewImage}/>
+                    <div>
+                    <img title={spot.name} src={spot.previewImage}/>
+                    </div>
                     <h4>{`${spot.city}, ${spot.state}`}</h4>
-                    <h4>{`${spot.avgRating} ★ Rating` || 'New'}</h4>
+                    <h4>{rating}{spot.avgRating}</h4>
                     <h4>{`$${spot.price} night`}</h4>
                 </div>
                     </NavLink>

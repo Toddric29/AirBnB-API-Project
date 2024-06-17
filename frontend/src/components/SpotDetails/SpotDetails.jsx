@@ -2,9 +2,10 @@ import './SpotDetails.css';
 import { fetchSpotDetails } from '../../store/spots';
 import { fetchReviews } from '../../store/reviews';
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector, useStore } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import PostReviewModal from '../PostReviewModal/PostReviewModal';
+import SpotDetailsModal from '../SpotDetailsModal/SpotDetailsModal';
 import { useModal } from '../../context/Modal';
 
 const SpotDetails = () => {
@@ -14,12 +15,32 @@ const SpotDetails = () => {
     const {setModalContent} = useModal();
     const spot = useSelector(state => state.spots.spotDetails[spotId]);
     const reviews = useSelector(state => state.reviews);
-    // console.log(spot, reviews)
     useEffect(() => {
-        dispatch(fetchSpotDetails(spotId)).then(() => setIsLoaded(true));
-        dispatch(fetchReviews(spotId)).then(() => setIsLoaded(true));
+        Promise.all([
+        dispatch(fetchSpotDetails(spotId)),
+        dispatch(fetchReviews(spotId))
+        ]).then(() => setIsLoaded(true))
     }, [spotId, dispatch])
 
+    // useEffect(() => {
+    //     dispatch(fetchSpotDetails(spotId));
+    // }, [reviews, dispatch])
+    let rating = '★ '
+    let reviewText = ' review'
+    if (isLoaded) {
+    if (spot.avgStarRating === null) {
+        spot.avgStarRating = 'New'
+    }
+    if (spot.numReviews === null) {
+        spot.numReviews = 'New'
+    }
+    if (spot.numReviews === 'New') {
+        reviewText = ''
+    }
+    if (spot.numReviews > 1) {
+        reviewText = ' reviews'
+    }
+}
     return isLoaded ? (
         <div>
             <div>
@@ -36,17 +57,18 @@ const SpotDetails = () => {
             <div>
                 <div>
                     <h3>{`$${spot.price} night`}</h3>
-                    <p>{`${spot.avgStarRating} ★ Rating` || 'New'}</p>
-                    <p>{`${spot.numReviews} review(s)`}</p>
+                    <p>{rating}{spot.avgStarRating.toFixed(2)}</p>
+                    <p>{spot.numReviews}{reviewText}</p>
+                    <button onClick={() => setModalContent(<SpotDetailsModal/>)}>Reserve</button>
                 </div>
             </div>
             <div>
                 <div>
-                    <h2>{`${spot.avgStarRating} ★ Rating` || 'New'}</h2>
+                    <h2>{rating}{spot.avgStarRating.toFixed(2)}</h2>
                 </div>
             </div>
             <div>
-            <h2>{`${spot.numReviews} review(s)`|| 'New'}</h2>
+            <h2>{spot.numReviews}{reviewText}</h2>
             <button onClick={() => setModalContent(<PostReviewModal spotId = {spotId}/>)}>Post Your Review</button>
             <div>
             {Object.values(reviews).map(review => {
