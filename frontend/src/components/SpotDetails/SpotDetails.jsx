@@ -31,6 +31,9 @@ const SpotDetails = () => {
     if (spot.avgStarRating === null) {
         spot.avgStarRating = 'New'
     }
+    if (spot.avgStarRating != 'New') {
+        spot.avgStarRating = parseFloat(spot.avgStarRating).toFixed(2)
+    }
     if (spot.numReviews === null) {
         spot.numReviews = 'New'
     }
@@ -57,14 +60,14 @@ const SpotDetails = () => {
             <div>
                 <div>
                     <h3>{`$${spot.price} night`}</h3>
-                    <p>{rating}{spot.avgStarRating.toFixed(2)}</p>
+                    <p>{rating}{spot.avgStarRating}</p>
                     <p>{spot.numReviews}{reviewText}</p>
                     <button onClick={() => setModalContent(<SpotDetailsModal/>)}>Reserve</button>
                 </div>
             </div>
             <div>
                 <div>
-                    <h2>{rating}{spot.avgStarRating.toFixed(2)}</h2>
+                    <h2>{rating}{spot.avgStarRating}</h2>
                 </div>
             </div>
             <div>

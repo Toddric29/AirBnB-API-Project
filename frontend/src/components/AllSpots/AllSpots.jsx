@@ -19,9 +19,6 @@ const AllSpots = () => {
                 if (spot.avgRating === null) {
                     spot.avgRating = 'New'
                 }
-                if (spot.avgRating === 'New') {
-                    rating = ''
-                }
                 return (
                     <NavLink key={spot.name} to={`/spots/${spot.id}`}>
                     <div key={spot.id}>
