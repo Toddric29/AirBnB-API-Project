@@ -2,7 +2,6 @@ import { useState } from 'react';
 import * as sessionActions from '../../store/session';
 import { useDispatch } from 'react-redux';
 import { useModal } from '../../context/Modal';
-import { NavLink } from 'react-router-dom';
 import './LoginForm.css';
 
 function LoginFormModal() {
@@ -19,8 +18,9 @@ function LoginFormModal() {
       .then(closeModal)
       .catch(async (res) => {
         const data = await res.json();
-        if (data && data.errors) {
-          setErrors(data.errors);
+        if (data && data.message) {
+          console.log(data.message)
+          setErrors(data.message);
         }
       });
   };
@@ -29,7 +29,7 @@ function LoginFormModal() {
     return dispatch(sessionActions.login({ credential: 'demo@user.io', password: 'password' }))
     .then(closeModal)
   }
-console.log(errors)
+  console.log(errors)
   return (
     <>
       <h1>Log In</h1>
@@ -52,10 +52,10 @@ console.log(errors)
             required
           />
         </label>
-        {errors.credential && (
-          <p>{errors.credential}</p>
-        )}
         <button disabled={credential.length < 4 || password.length < 6}type="submit">Log In</button>
+        {Object.values(errors).length > 0 && (
+          <p>The provided credentials were invalid</p>
+        )}
       </form>
       <form onSubmit={handleDemo}>
         <div>

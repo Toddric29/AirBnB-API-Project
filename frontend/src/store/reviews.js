@@ -50,12 +50,12 @@ const reviewsReducer = (state = initialState, action) => {
     }
     case NEW_REVIEW: {
       return state
-      console.log(state, '<------0')
-      const reviews = {...state}
-      console.log(reviews, '<-------1')
-      reviews[action.payload.id] = action.payload;
-      console.log(reviews, '<-------2')
-      return reviews;
+      // console.log(state, '<------0')
+      // const reviews = {...state}
+      // console.log(reviews, '<-------1')
+      // reviews[action.payload.id] = action.payload;
+      // console.log(reviews, '<-------2')
+      // return reviews;
     }
     default:
       return state;

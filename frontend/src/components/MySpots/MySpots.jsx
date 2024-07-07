@@ -39,8 +39,8 @@ const MySpots = () => {
                 </div>
                     </NavLink>
                     <div key={spot.id}>
-                    <button onClick={e => editSpots(spot.id)}>Update</button>
-                    <button onClick={e => deleteSpot(spot.id)}>Delete</button>
+                    <button onClick={() => editSpots(spot.id)}>Update</button>
+                    <button onClick={() => deleteSpot(spot.id)}>Delete</button>
                     </div>
                     </ div>
                 )

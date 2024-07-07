@@ -2,7 +2,7 @@ import './SpotDetails.css';
 import { fetchSpotDetails } from '../../store/spots';
 import { fetchReviews } from '../../store/reviews';
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector, useStore } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import PostReviewModal from '../PostReviewModal/PostReviewModal';
 import SpotDetailsModal from '../SpotDetailsModal/SpotDetailsModal';
@@ -15,6 +15,8 @@ const SpotDetails = () => {
     const {setModalContent} = useModal();
     const spot = useSelector(state => state.spots.spotDetails[spotId]);
     const reviews = useSelector(state => state.reviews);
+    let previewImage;
+    let spotImages = [];
     useEffect(() => {
         Promise.all([
         dispatch(fetchSpotDetails(spotId)),
@@ -28,16 +30,26 @@ const SpotDetails = () => {
     let rating = '★ '
     let reviewText = ' review'
     if (isLoaded) {
+        spot.SpotImages.map(image => {
+            console.log(image)
+            if (image.preview === true) {
+                previewImage = <img src={image.url} key={image.id}  className="preview-image"/>
+            }
+
+            if (image.url !== '' && image.preview !== true) {
+                spotImages.push(<img src={image.url} key={image.id}  className="other-images"/>)
+            }
+        })
     if (spot.avgStarRating === null) {
         spot.avgStarRating = 'New'
     }
     if (spot.avgStarRating != 'New') {
-        spot.avgStarRating = parseFloat(spot.avgStarRating).toFixed(2)
+        spot.avgStarRating = `${parseFloat(spot.avgStarRating).toFixed(2)}  · `
     }
     if (spot.numReviews === null) {
-        spot.numReviews = 'New'
+        spot.numReviews = ''
     }
-    if (spot.numReviews === 'New') {
+    if (spot.numReviews === '') {
         reviewText = ''
     }
     if (spot.numReviews > 1) {
@@ -50,7 +62,16 @@ const SpotDetails = () => {
             <h3>{spot.name}</h3>
             <p>{`${spot.city}, ${spot.state}, ${spot.country}`}</p>
             </div>
-            <img src={spot.SpotImages[0].url}/>
+            <div>
+            {previewImage}
+            </div>
+            <div>
+            {spotImages && (
+                <div className="other-images-div">
+                    {spotImages}
+                </div>
+            )}
+            </div>
             <div>
                 <h4>{`Hosted by ${spot.Owner.firstName} ${spot.Owner.lastName}`}</h4>
             </div>
@@ -60,18 +81,16 @@ const SpotDetails = () => {
             <div>
                 <div>
                     <h3>{`$${spot.price} night`}</h3>
-                    <p>{rating}{spot.avgStarRating}</p>
-                    <p>{spot.numReviews}{reviewText}</p>
+                    <p>{`${rating}${spot.avgStarRating}${spot.numReviews}${reviewText}`}</p>
                     <button onClick={() => setModalContent(<SpotDetailsModal/>)}>Reserve</button>
                 </div>
             </div>
             <div>
                 <div>
-                    <h2>{rating}{spot.avgStarRating}</h2>
+                    <h2>{`${rating}${spot.avgStarRating}${spot.numReviews}${reviewText}`}</h2>
                 </div>
             </div>
             <div>
-            <h2>{spot.numReviews}{reviewText}</h2>
             <button onClick={() => setModalContent(<PostReviewModal spotId = {spotId}/>)}>Post Your Review</button>
             <div>
             {Object.values(reviews).map(review => {

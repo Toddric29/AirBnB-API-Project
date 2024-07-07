@@ -40,7 +40,7 @@ function SignupFormModal() {
       confirmPassword: "Confirm Password field must be the same as the Password field"
     });
   };
-
+console.log(errors)
   return (
     <>
       <h1>Sign Up</h1>
