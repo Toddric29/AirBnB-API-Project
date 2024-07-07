@@ -1,5 +1,5 @@
 import './SpotDetails.css';
-import { fetchSpotDetails } from '../../store/spots';
+import { fetchSpotDetails, fetchMySpots } from '../../store/spots';
 import { fetchReviews } from '../../store/reviews';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -14,24 +14,25 @@ const SpotDetails = () => {
     const { spotId } = useParams();
     const {setModalContent} = useModal();
     const spot = useSelector(state => state.spots.spotDetails[spotId]);
+    const spots = useSelector((state) => state.spots.mySpots);
     const reviews = useSelector(state => state.reviews);
+    const id = spots[0] ? spots[0].ownerId : null
     let previewImage;
     let spotImages = [];
+    console.log(spot)
+    console.log(spots)
     useEffect(() => {
         Promise.all([
         dispatch(fetchSpotDetails(spotId)),
-        dispatch(fetchReviews(spotId))
+        dispatch(fetchReviews(spotId)),
+        dispatch(fetchMySpots())
         ]).then(() => setIsLoaded(true))
     }, [spotId, dispatch])
 
-    // useEffect(() => {
-    //     dispatch(fetchSpotDetails(spotId));
-    // }, [reviews, dispatch])
     let rating = '★ '
     let reviewText = ' review'
     if (isLoaded) {
         spot.SpotImages.map(image => {
-            console.log(image)
             if (image.preview === true) {
                 previewImage = <img src={image.url} key={image.id}  className="preview-image"/>
             }
@@ -92,9 +93,11 @@ const SpotDetails = () => {
             </div>
             <div>
             <button onClick={() => setModalContent(<PostReviewModal spotId = {spotId}/>)}>Post Your Review</button>
+            {Object.values(reviews).length === 0 && id != spot.id && (
+                <p>Be the first to post a review!</p>
+            )}
             <div>
-            {Object.values(reviews).map(review => {
-                // console.log(review.User.firstName, '<---- Review')
+            {Object.values(reviews).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).map(review => {
                 return (
                     <div key={review.id}>
                     <h3>{review.User.firstName}</h3>
