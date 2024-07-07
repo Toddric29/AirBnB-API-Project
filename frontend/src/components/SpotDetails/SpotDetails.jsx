@@ -1,5 +1,5 @@
 import './SpotDetails.css';
-import { fetchSpotDetails, fetchMySpots } from '../../store/spots';
+import { fetchSpotDetails} from '../../store/spots';
 import { fetchReviews } from '../../store/reviews';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -13,19 +13,18 @@ const SpotDetails = () => {
     const dispatch = useDispatch()
     const { spotId } = useParams();
     const {setModalContent} = useModal();
+    const sessionUser = useSelector(state => state.session.user)
     const spot = useSelector(state => state.spots.spotDetails[spotId]);
-    const spots = useSelector((state) => state.spots.mySpots);
     const reviews = useSelector(state => state.reviews);
-    const id = spots[0] ? spots[0].ownerId : null
+    const id = sessionUser ? sessionUser.id : null
+    console.log(spot)
+    console.log(sessionUser)
     let previewImage;
     let spotImages = [];
-    console.log(spot)
-    console.log(spots)
     useEffect(() => {
         Promise.all([
         dispatch(fetchSpotDetails(spotId)),
         dispatch(fetchReviews(spotId)),
-        dispatch(fetchMySpots())
         ]).then(() => setIsLoaded(true))
     }, [spotId, dispatch])
 
@@ -93,7 +92,7 @@ const SpotDetails = () => {
             </div>
             <div>
             <button onClick={() => setModalContent(<PostReviewModal spotId = {spotId}/>)}>Post Your Review</button>
-            {Object.values(reviews).length === 0 && id != spot.id && (
+            {Object.values(reviews).length === 0 && id != spot.id && id != null && (
                 <p>Be the first to post a review!</p>
             )}
             <div>
