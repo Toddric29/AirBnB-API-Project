@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { createSpot } from '../../store/spots';
+import { createSpot, editSpot, fetchSpotDetails } from '../../store/spots';
 import './NewSpot.css'
 
 const getUrl = (spot, index) => {
@@ -48,6 +48,7 @@ const CreateSpotForm = ({ spot }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log(errors)
 
     // const handleCancel = () => {
     //     setAddress("");
@@ -93,11 +94,25 @@ const CreateSpotForm = ({ spot }) => {
       ]
     };
 
-    const createdSpot= await dispatch(createSpot(payload));
-    if (createdSpot) {
-      navigate(`/api/spots/${createdSpot.id}`);
-    //   hideForm();
+
+    if (spot) {
+        dispatch(fetchSpotDetails({...payload, spotId: spot.id}))
+        .then(() => navigate(`/spots/${spot.id}`))
+        .catch(async res => {
+            const data = await res.json()
+            console.log(data.errors)
+            setErrors(data.errors)
+        })
+        return;
     }
+    dispatch(createSpot(payload))
+    .then((createdSpot) => navigate(`/spots/${createdSpot.id}`))
+      .catch(async (res) => {
+        const data = res
+        console.log(data.message)
+        setErrors(data.errors)
+      })
+    //   hideForm();
   };
 
   const handleCancelClick = (e) => {
@@ -114,26 +129,34 @@ const CreateSpotForm = ({ spot }) => {
       <form className="create-spot-form" onSubmit={handleSubmit}>
         <input
           type="text"
-          placeholder="Country"
-          required
+          required placeholder="Country"
+        onInvalid={F => F.target.setCustomValidity('Chep!')}
+        onInput={F => F.target.setCustomValidity('')}
           value={country}
           onChange={updateCountry} />
+          {errors.country && (<p>{errors.country}</p>)}
         <input
           type="text"
           placeholder="Address"
           required
+          onInvalid={F => F.target.setCustomValidity('Chep!')}
+          onInput={F => F.target.setCustomValidity('')}
           value={address}
           onChange={updateAddress} />
         <input
           type="text"
           placeholder="City"
           required
+          onInvalid={F => F.target.setCustomValidity('Chep!')}
+          onInput={F => F.target.setCustomValidity('')}
           value={city}
           onChange={updateCity} />
         <input
           type="text"
           placeholder="State"
           required
+          onInvalid={F => F.target.setCustomValidity('Chep!')}
+          onInput={F => F.target.setCustomValidity('')}
           value={state}
           onChange={updateState} />
         <input
@@ -142,6 +165,8 @@ const CreateSpotForm = ({ spot }) => {
           min="0"
           max="100"
           required
+          onInvalid={F => F.target.setCustomValidity('Chep!')}
+          onInput={F => F.target.setCustomValidity('')}
           value={lat}
           onChange={updateLat} />
           <input
@@ -150,6 +175,8 @@ const CreateSpotForm = ({ spot }) => {
           min="0"
           max="100"
           required
+          onInvalid={F => F.target.setCustomValidity('Chep!')}
+          onInput={F => F.target.setCustomValidity('')}
           value={lng}
           onChange={updateLng} />
           <h2>Describe your place to guests</h2>
@@ -161,6 +188,8 @@ const CreateSpotForm = ({ spot }) => {
           type="text"
           placeholder="Please write at least 30 characters"
           required
+          onInvalid={F => F.target.setCustomValidity('Chep!')}
+          onInput={F => F.target.setCustomValidity('')}
           value={description}
           onChange={updateDescription} />
           <h2>Create a title for your spot</h2>
@@ -170,6 +199,8 @@ const CreateSpotForm = ({ spot }) => {
           type="text"
           placeholder="Name of your spot"
           required
+          onInvalid={F => F.target.setCustomValidity('Chep!')}
+          onInput={F => F.target.setCustomValidity('')}
           value={name}
           onChange={updateName} />
           <h2>Set a base price for your spot</h2>
@@ -180,6 +211,8 @@ const CreateSpotForm = ({ spot }) => {
           placeholder="Price per night (USD)"
           min="1"
           required
+          onInvalid={F => F.target.setCustomValidity('Chep!')}
+          onInput={F => F.target.setCustomValidity('')}
           value={price}
           onChange={updatePrice} />
           <h2>Liven up your spot with photos</h2>
@@ -188,30 +221,28 @@ const CreateSpotForm = ({ spot }) => {
           type="text"
           placeholder="Preview Image"
           required
+          onInvalid={F => F.target.setCustomValidity('Chep!')}
+          onInput={F => F.target.setCustomValidity('')}
           value={previewImage}
           onChange={updatePreviewImage} />
           <input
           type="text"
           placeholder="Image URL"
-          required
           value={imageTwo}
           onChange={updateImageTwo} />
           <input
           type="text"
           placeholder="Image URL"
-          required
           value={imageThree}
           onChange={updateImageThree} />
           <input
           type="text"
           placeholder="Image URL"
-          required
           value={imageFour}
           onChange={updateImageFour} />
           <input
           type="text"
           placeholder="Image URL"
-          required
           value={imageFive}
           onChange={updateImageFive} />
         <button type="submit">Create new Spot</button>

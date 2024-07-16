@@ -10,7 +10,8 @@ const PostReviewModal= ({spotId}) => {
     const { closeModal } = useModal();
       const dispatch = useDispatch();
       const [review, setReview] = useState("")
-      const [stars, setStars] = useState(0);
+      const [stars, setStars] = useState(null);
+      const [hover, setHover] = useState(null)
       const [errors, setErrors] = useState({});
 
 
@@ -43,24 +44,41 @@ const PostReviewModal= ({spotId}) => {
       return (
         <>
           <form onSubmit={handleSubmit}>
+            <h1>How was your stay?</h1>
             <label>
               Review
               <input
                 type="text"
+                placeholder="Leave your review here..."
                 value={review}
                 onChange={(e) => setReview(e.target.value)}
               />
             </label>
             {errors.review && <p>{errors.review}</p>}
-            <label>
-              Stars
-              <input
-                type="number"
-                value={stars}
-                onChange={(e) => setStars(e.target.value)}
-              />
-            </label>
-            <button type="submit">Create Review</button>
+            <div>
+                    {[...Array(5)].map((_, index) => {
+                    const currentRating = index + 1;
+                    return (
+                    <label key={index}>
+                        <input
+                            type="radio"
+                            name="rating"
+                            value={currentRating}
+                            onClick={() => setStars(currentRating)}
+                        />
+                        <span
+                            style={{ color: currentRating <= (hover || stars) ? '#ffc107' : 'grey' }}
+                            onMouseEnter={() => setHover(currentRating)}
+                            onMouseLeave={() => setHover(null)}
+                        >
+                            &#9733;
+                        </span>
+                    </label>
+                    );
+                    })}
+                <label>Stars</label>
+                </div>
+            <button disabled={review.length < 10}type="submit">Submit Your Review</button>
           </form>
         </>
       );

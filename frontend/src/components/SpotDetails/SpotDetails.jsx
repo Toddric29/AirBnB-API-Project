@@ -17,8 +17,10 @@ const SpotDetails = () => {
     const spot = useSelector(state => state.spots.spotDetails[spotId]);
     const reviews = useSelector(state => state.reviews);
     const id = sessionUser ? sessionUser.id : null
+    const alreadyReviewed = Object.values(reviews).find(review => review.User.id === id);
     console.log(spot)
     console.log(sessionUser)
+    console.log(reviews)
     let previewImage;
     let spotImages = [];
     useEffect(() => {
@@ -91,7 +93,7 @@ const SpotDetails = () => {
                 </div>
             </div>
             <div>
-            <button onClick={() => setModalContent(<PostReviewModal spotId = {spotId}/>)}>Post Your Review</button>
+            <button hidden={id === spot.Owner.id || sessionUser.id === null || alreadyReviewed} onClick={() => setModalContent(<PostReviewModal spotId = {spotId}/>)}>Post Your Review</button>
             {Object.values(reviews).length === 0 && id != spot.id && id != null && (
                 <p>Be the first to post a review!</p>
             )}
