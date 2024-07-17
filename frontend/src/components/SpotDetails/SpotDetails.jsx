@@ -107,6 +107,7 @@ const SpotDetails = () => {
                         year: 'numeric'
                     })}</h3>
                     <h3>{review.review}</h3>
+                    <button>Delete</button>
                 </div>
                 )
                 })}

@@ -23,7 +23,7 @@ const CreateSpotForm = ({ spot }) => {
   const [lng, setLng] = useState(1);
   const [description, setDescription] = useState('');
   const [name, setName] = useState('');
-  const [price, setPrice] = useState();
+  const [price, setPrice] = useState(1);
   const [previewImage, setPreviewImage] = useState(getUrl(spot, 0));
   const [imageTwo, setImageTwo] = useState(getUrl(spot, 1))
   const [imageThree, setImageThree] = useState(getUrl(spot, 2))
@@ -48,6 +48,7 @@ const CreateSpotForm = ({ spot }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setErrors({})
     console.log(errors)
 
     // const handleCancel = () => {
@@ -74,11 +75,8 @@ const CreateSpotForm = ({ spot }) => {
       description,
       name,
       price,
+      previewImage,
       images: [
-        {
-            url: previewImage,
-            preview: true
-        },
         {
             url: imageTwo
         },
@@ -95,24 +93,27 @@ const CreateSpotForm = ({ spot }) => {
     };
 
 
-    if (spot) {
-        dispatch(fetchSpotDetails({...payload, spotId: spot.id}))
-        .then(() => navigate(`/spots/${spot.id}`))
-        .catch(async res => {
-            const data = await res.json()
-            console.log(data.errors)
-            setErrors(data.errors)
-        })
-        return;
-    }
+    // if (spot) {
+    //    return dispatch(fetchSpotDetails({...payload, spotId: spot.id}))
+    //     .then(() => navigate(`/spots/${spot.id}`))
+    //     .catch(async (res) => {
+    //         const data = await res.json()
+    //         console.log(data.errors)
+    //         setErrors(data.errors)
+    //     })
+    //     // return;
+    // }
     dispatch(createSpot(payload))
-    .then((createdSpot) => navigate(`/spots/${createdSpot.id}`))
-      .catch(async (res) => {
-        const data = res
-        console.log(data.message)
-        setErrors(data.errors)
-      })
-    //   hideForm();
+    .then( (newSpot) =>  {
+      console.log(newSpot)
+      navigate(`/spots/${newSpot.id}`)
+    })
+    .catch(async res => {
+      console.log(res)
+        const errors = await res.json()
+        console.log(errors)
+        setErrors(errors.errors)
+    })
   };
 
   const handleCancelClick = (e) => {
@@ -129,56 +130,40 @@ const CreateSpotForm = ({ spot }) => {
       <form className="create-spot-form" onSubmit={handleSubmit}>
         <input
           type="text"
-          required placeholder="Country"
-        onInvalid={F => F.target.setCustomValidity('Chep!')}
-        onInput={F => F.target.setCustomValidity('')}
+          placeholder="Country"
           value={country}
           onChange={updateCountry} />
           {errors.country && (<p>{errors.country}</p>)}
         <input
           type="text"
           placeholder="Address"
-          required
-          onInvalid={F => F.target.setCustomValidity('Chep!')}
-          onInput={F => F.target.setCustomValidity('')}
           value={address}
           onChange={updateAddress} />
+          {errors.address && (<p>{errors.address}</p>)}
         <input
           type="text"
           placeholder="City"
-          required
-          onInvalid={F => F.target.setCustomValidity('Chep!')}
-          onInput={F => F.target.setCustomValidity('')}
           value={city}
           onChange={updateCity} />
+          {errors.city && (<p>{errors.city}</p>)}
         <input
           type="text"
           placeholder="State"
-          required
-          onInvalid={F => F.target.setCustomValidity('Chep!')}
-          onInput={F => F.target.setCustomValidity('')}
           value={state}
           onChange={updateState} />
+          {errors.state && (<p>{errors.state}</p>)}
         <input
           type="number"
           placeholder="Lat"
-          min="0"
-          max="100"
-          required
-          onInvalid={F => F.target.setCustomValidity('Chep!')}
-          onInput={F => F.target.setCustomValidity('')}
           value={lat}
           onChange={updateLat} />
+          {errors.lat && (<p>{errors.lat}</p>)}
           <input
           type="number"
           placeholder="Lng"
-          min="0"
-          max="100"
-          required
-          onInvalid={F => F.target.setCustomValidity('Chep!')}
-          onInput={F => F.target.setCustomValidity('')}
           value={lng}
           onChange={updateLng} />
+          {errors.lng && (<p>{errors.lng}</p>)}
           <h2>Describe your place to guests</h2>
           <h3>Mention the best features of your
             space, any special amentities like
@@ -187,44 +172,35 @@ const CreateSpotForm = ({ spot }) => {
         <input
           type="text"
           placeholder="Please write at least 30 characters"
-          required
-          onInvalid={F => F.target.setCustomValidity('Chep!')}
-          onInput={F => F.target.setCustomValidity('')}
           value={description}
           onChange={updateDescription} />
+          {errors.description && (<p>{errors.description}</p>)}
           <h2>Create a title for your spot</h2>
           <h3>Catch guests&apos; attention with a spot title that
             highlights what makes your place special.</h3>
         <input
           type="text"
           placeholder="Name of your spot"
-          required
-          onInvalid={F => F.target.setCustomValidity('Chep!')}
-          onInput={F => F.target.setCustomValidity('')}
           value={name}
           onChange={updateName} />
+          {errors.name && (<p>{errors.name}</p>)}
           <h2>Set a base price for your spot</h2>
           <h3>Competitive pricing can help your listing stand out
              and rank higher in search results.</h3>
         <input
-          type="text"
+          type="number"
           placeholder="Price per night (USD)"
-          min="1"
-          required
-          onInvalid={F => F.target.setCustomValidity('Chep!')}
-          onInput={F => F.target.setCustomValidity('')}
           value={price}
           onChange={updatePrice} />
+          {errors.price && (<p>{errors.price}</p>)}
           <h2>Liven up your spot with photos</h2>
           <h3>Submit a link to at least one photo to publish your spot.</h3>
         <input
           type="text"
           placeholder="Preview Image"
-          required
-          onInvalid={F => F.target.setCustomValidity('Chep!')}
-          onInput={F => F.target.setCustomValidity('')}
           value={previewImage}
           onChange={updatePreviewImage} />
+          {errors.previewImage && (<p>{errors.previewImage}</p>)}
           <input
           type="text"
           placeholder="Image URL"
