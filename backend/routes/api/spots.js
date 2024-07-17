@@ -25,23 +25,27 @@ const validateSpot = [
       .withMessage('Country is required'),
       check('lat')
       .exists({ checkFalsy: true })
-      .isFloat({gte: -90, lte: 90})
+      .isFloat({min: -90, max: 90})
       .withMessage('Latitude is not valid'),
       check('lng')
       .exists({ checkFalsy: true })
-      .isFloat({gte: -180, lte: 180})
+      .isFloat({min: -180, max: 180})
       .withMessage('Longitude is not valid'),
       check('name')
       .exists({ checkFalsy: true })
       .isLength({min: 1, max: 50})
-      .withMessage('Name must be less than 50 characters'),
+      .withMessage('Name is required and must be less than 50 characters'),
       check('description')
       .exists({ checkFalsy: true })
-      .withMessage('Description is required'),
+      .isLength({min: 30, max: 500})
+      .withMessage('Description must be at least 30 characters long'),
       check('price')
       .exists({ checkFalsy: true })
       .isFloat({min:0})
-      .withMessage('Price per day is required'),
+      .withMessage('Price per day is required and cannot be less than 0'),
+      check('previewImage')
+      .exists({ checkFalsy: true })
+      .withMessage('A preview image is required'),
     handleValidationErrors
   ];
 
@@ -373,7 +377,7 @@ router.get('/:spotId/bookings', requireAuth, async (req, res, next) => {
     res.json({Bookings: userBookings})
 })
 router.post('/', requireAuth, validateSpot, async (req, res, next) => {
-  let {address, city, state, country, lat, lng, name, description, price} = req.body
+  let {address, city, state, country, lat, lng, name, description, price, previewImage, images} = req.body
     try{
     let newSpot;
     newSpot = await Spot.create({
@@ -388,6 +392,24 @@ router.post('/', requireAuth, validateSpot, async (req, res, next) => {
       description,
       price: parseFloat(price)
     })
+    if (previewImage) {
+      console.log(typeof previewImage)
+      await newSpot.createSpotImage({
+        url: previewImage,
+        preview: true
+      })
+    }
+    if (images) {
+      for (const image of images) {
+        if (!image.url) {
+          continue
+        }
+        await newSpot.createSpotImage({
+          url: image.url,
+          preview: false
+        })
+      }
+    }
     return res.status(201).json({
       id: parseInt(newSpot.id),
       ownerId: req.user.id,
@@ -519,7 +541,29 @@ router.put('/:spotId', requireAuth, validateSpot, async (req, res, next) => {
           message: 'Forbidden'
         })
       }
+      const previewImage = req.body.previewImage
+      const images = req.body.images
+      delete req.body.previewImage
+      delete req.body.images
     updatedSpot.update(req.body)
+    await updatedSpot.removeSpotImages()
+    if (previewImage) {
+      await newSpot.createSpotImage({
+        url: previewImage,
+        preview: true
+      })
+    }
+    if (images) {
+      for (const image of images) {
+        if (!image.url) {
+          continue
+        }
+        await newSpot.createSpotImage({
+          url: image.url,
+          preview: false
+        })
+      }
+    }
     res.json(updatedSpot)
 });
 router.delete('/:spotId', requireAuth, async (req, res, next) => {
