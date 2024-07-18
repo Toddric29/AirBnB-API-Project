@@ -1,29 +1,50 @@
 import './MySpots.css';
 import { fetchMySpots } from '../../store/spots';
-import { useEffect} from 'react';
+import { useEffect, useState, useRef} from 'react';
 import { useDispatch, useSelector} from 'react-redux';
 import { NavLink, useNavigate} from 'react-router-dom';
 // import * as spotActions from '../../store/spots'
 import { removeSpot } from '../../store/spots';
+import OpenModalButton from '../OpenModalButton/OpenModalButton';
+import DeleteSpotModal from '../DeleteSpotModal/DeleteSpotModal';
 
 const MySpots = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate();
+    const [showMenu, setShowMenu] = useState(false);
+    const ulRef = useRef();
     const spots = useSelector((state) => state.spots.mySpots);
     console.log(spots)
+
+    useEffect(() => {
+        if (!showMenu) return;
+
+        const closeMenu = (e) => {
+          if (!ulRef.current.contains(e.target)) {
+            setShowMenu(false);
+          }
+        };
+
+        document.addEventListener('click', closeMenu);
+
+        return () => document.removeEventListener("click", closeMenu);
+      }, [showMenu]);
+
+      const closeMenu = () => setShowMenu(false);
+
     useEffect(() => {
         dispatch(fetchMySpots())
     }, [dispatch])
 
-    const createSpot = () => {
-        navigate(`/spots/new`)
-    }
+    // const createSpot = () => {
+    //     navigate(`/spots/new`)
+    // }
     const editSpots = (spotId) => {
         navigate(`/spots/${spotId}/edit`)
         }
-    const deleteSpot = (spotId) => {
-        dispatch(removeSpot(spotId)).then(() => navigate('/'))
-    }
+    // const deleteSpot = (spotId) => {
+    //     dispatch(removeSpot(spotId)).then(() => navigate('/'))
+    // }
 
     return (
         <main>
@@ -49,7 +70,11 @@ const MySpots = () => {
                     </NavLink>
                     <div key={spot.id}>
                     <button onClick={() => editSpots(spot.id)}>Update</button>
-                    <button onClick={() => deleteSpot(spot.id)}>Delete</button>
+                    <OpenModalButton
+                        buttonText="Delete"
+                        onItemClick={closeMenu}
+                        modalComponent={<DeleteSpotModal spotId={spot.id}/>}
+                        />
                     </div>
                     </ div>
                 )

@@ -1,16 +1,20 @@
 import './SpotDetails.css';
 import { fetchSpotDetails} from '../../store/spots';
 import { fetchReviews } from '../../store/reviews';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import PostReviewModal from '../PostReviewModal/PostReviewModal';
 import SpotDetailsModal from '../SpotDetailsModal/SpotDetailsModal';
 import { useModal } from '../../context/Modal';
+import OpenModalButton from '../OpenModalButton/OpenModalButton';
+import DeleteReviewModal from '../DeleteReviewModal/DeleteReivewModal';
 
 const SpotDetails = () => {
     const [isLoaded, setIsLoaded] = useState(false)
     const dispatch = useDispatch()
+    const [showMenu, setShowMenu] = useState(false);
+    const ulRef = useRef();
     const { spotId } = useParams();
     const {setModalContent} = useModal();
     const sessionUser = useSelector(state => state.session.user)
@@ -23,6 +27,23 @@ const SpotDetails = () => {
     console.log(reviews)
     let previewImage;
     let spotImages = [];
+
+    useEffect(() => {
+        if (!showMenu) return;
+
+        const closeMenu = (e) => {
+          if (!ulRef.current.contains(e.target)) {
+            setShowMenu(false);
+          }
+        };
+
+        document.addEventListener('click', closeMenu);
+
+        return () => document.removeEventListener("click", closeMenu);
+      }, [showMenu]);
+
+      const closeMenu = () => setShowMenu(false);
+
     useEffect(() => {
         Promise.all([
         dispatch(fetchSpotDetails(spotId)),
@@ -107,7 +128,13 @@ const SpotDetails = () => {
                         year: 'numeric'
                     })}</h3>
                     <h3>{review.review}</h3>
-                    <button>Delete</button>
+                    {review === alreadyReviewed &&
+                        <OpenModalButton hidden={review != alreadyReviewed}
+                        buttonText="Delete"
+                        onItemClick={closeMenu}
+                        modalComponent={<DeleteReviewModal reviewId={review.id} spotId={spot.id} />}
+                        />
+                    }
                 </div>
                 )
                 })}

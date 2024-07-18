@@ -2,6 +2,7 @@ import { csrfFetch } from "./csrf";
 
 const LOAD_REVIEWS = 'reviews/loadReviews'
 const NEW_REVIEW = 'reviews/newReview'
+const DELETE_REVIEW = 'spots/deleteReview'
 
 const loadReviews = (payload) => {
   return {
@@ -12,6 +13,10 @@ const loadReviews = (payload) => {
 
 const newReview = (payload) => ({
   type: NEW_REVIEW,
+  payload
+})
+export const deleteReview = (payload) => ({
+  type: DELETE_REVIEW,
   payload
 })
 export const fetchReviews = (spotId) => async(dispatch) => {
@@ -39,6 +44,14 @@ export const addNewReview = (spotId, payload) => async (dispatch) => {
     return res;
 };
 
+export const fetchDeleteReview = (reviewId) => async () => {
+  const res = await csrfFetch(`/api/reviews/${reviewId}`, {
+      method: 'DELETE'
+  });
+
+  return res
+}
+
 const initialState = {};
 
 const reviewsReducer = (state = initialState, action) => {
@@ -57,6 +70,13 @@ const reviewsReducer = (state = initialState, action) => {
       // console.log(reviews, '<-------2')
       // return reviews;
     }
+    case DELETE_REVIEW: {
+      const reviewId = action.payload
+      const newState = {...state}
+      newState.reviews = newState.reviews ? {...newState.reviews} : {}
+      delete newState.reviews[reviewId]
+      return newState
+  }
     default:
       return state;
   }

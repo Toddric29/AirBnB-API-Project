@@ -7,6 +7,7 @@ const MY_SPOTS = 'spots/mySpot'
 const REMOVE_SPOT = 'spots/removeSpot'
 
 
+
 const loadSpots = (payload) => {
     return {
         type: LOAD_SPOTS,
@@ -99,6 +100,13 @@ export const editSpot = (payload, spotId) => async dispatch => {
     }
 };
 
+export const deleteSpot = (spotId) => async () => {
+    const res = await csrfFetch(`/api/spots/${spotId}`, {
+        method: 'DELETE'
+    });
+    return res
+}
+
 const spotsReducer = (state = initialState, action) => {
   switch (action.type) {
     case LOAD_SPOTS:{
@@ -139,10 +147,33 @@ const spotsReducer = (state = initialState, action) => {
         return {...state}
     }
     case REMOVE_SPOT: {
-        const id = action.payload;
-        const newState = {...state };
-        delete newState[id];
-        return {newState}
+        let newAllSpots;
+        let newMySpots;
+        const spotId = action.payload
+
+        if (state.allSpots) {
+            const data = {...state.allSpots.Spots}
+            let Spots = Object.values(data)
+            let index;
+            for (let i = 0; i < Spots.length; i++) {
+                if (Spots[i].id == spotId) index = i
+            }
+            Spots.splice(index, 1)
+            newAllSpots = Object.assign({}, Spots)
+        }
+
+        if (state.mySpots) {
+            const data = {...state.mySpots.Spots}
+            let Spots = Object.values(data)
+            let index;
+            for (let i = 0; i < Spots.length; i++) {
+                if (Spots[i].id == spotId) index = i
+            }
+            Spots.splice(index, 1)
+            newMySpots = Object.assign({}, Spots)
+        }
+
+        return {...state, allSpots: newAllSpots, mySpots: newMySpots}
     }
     default:
       {

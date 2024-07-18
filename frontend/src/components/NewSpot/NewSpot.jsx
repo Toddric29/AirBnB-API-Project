@@ -94,14 +94,14 @@ const CreateSpotForm = ({ spot }) => {
 
 
     // if (spot) {
-    //    return dispatch(fetchSpotDetails({...payload, spotId: spot.id}))
+    //    return dispatch(editSpot({...payload, spotId: spot.id}))
     //     .then(() => navigate(`/spots/${spot.id}`))
     //     .catch(async (res) => {
     //         const data = await res.json()
     //         console.log(data.errors)
     //         setErrors(data.errors)
     //     })
-    //     // return;
+    //     return;
     // }
     dispatch(createSpot(payload))
     .then( (newSpot) =>  {
