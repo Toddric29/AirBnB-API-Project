@@ -545,10 +545,11 @@ router.put('/:spotId', requireAuth, validateSpot, async (req, res, next) => {
       const images = req.body.images
       delete req.body.previewImage
       delete req.body.images
-    updatedSpot.update(req.body)
-    await updatedSpot.removeSpotImages()
+    await updatedSpot.update(req.body)
+    console.log(updatedSpot)
+    await SpotImage.destroy({where: {spotId: updatedSpot.id}})
     if (previewImage) {
-      await newSpot.createSpotImage({
+      await updatedSpot.createSpotImage({
         url: previewImage,
         preview: true
       })
@@ -558,7 +559,7 @@ router.put('/:spotId', requireAuth, validateSpot, async (req, res, next) => {
         if (!image.url) {
           continue
         }
-        await newSpot.createSpotImage({
+        await updatedSpot.createSpotImage({
           url: image.url,
           preview: false
         })
