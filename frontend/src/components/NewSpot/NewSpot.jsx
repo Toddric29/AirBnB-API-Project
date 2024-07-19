@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { createSpot, editSpot, fetchSpotDetails } from '../../store/spots';
+import { createSpot } from '../../store/spots';
 import './NewSpot.css'
 
 const getUrl = (spot, index) => {
