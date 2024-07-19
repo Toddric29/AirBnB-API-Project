@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import * as spotActions from '../../store/spots';
 import { useDispatch } from 'react-redux';
 import { useModal } from '../../context/Modal';

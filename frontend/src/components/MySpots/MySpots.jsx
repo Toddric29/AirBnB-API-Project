@@ -4,7 +4,6 @@ import { useEffect, useState, useRef} from 'react';
 import { useDispatch, useSelector} from 'react-redux';
 import { NavLink, useNavigate} from 'react-router-dom';
 // import * as spotActions from '../../store/spots'
-import { removeSpot } from '../../store/spots';
 import OpenModalButton from '../OpenModalButton/OpenModalButton';
 import DeleteSpotModal from '../DeleteSpotModal/DeleteSpotModal';
 
