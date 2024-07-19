@@ -114,7 +114,7 @@ const SpotDetails = () => {
                 </div>
             </div>
             <div>
-            <button hidden={id === spot.Owner.id || sessionUser.id === null || alreadyReviewed} onClick={() => setModalContent(<PostReviewModal spotId = {spotId}/>)}>Post Your Review</button>
+            {id && <button hidden={id === spot.Owner.id || sessionUser.id === null || alreadyReviewed} onClick={() => setModalContent(<PostReviewModal spotId = {spotId}/>)}>Post Your Review</button>}
             {Object.values(reviews).length === 0 && id != spot.id && id != null && (
                 <p>Be the first to post a review!</p>
             )}
