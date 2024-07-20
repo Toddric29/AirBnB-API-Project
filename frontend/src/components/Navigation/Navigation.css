@@ -5,3 +5,32 @@
 .hidden {
     display: none
 }
+
+.navigation {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+img.fake {
+    width: min-content;
+}
+
+.profile-button {
+    float: right;
+}
+
+.list {
+    display: inline-block;
+    padding: 2px;
+}
+.create-spot {
+    display: inline-block;
+    padding: 2px;
+    position: absolute;
+    top: 27px;
+    right: 160px;
+}
+
+/* ul.profile-dropdown {
+    display: inline-block
+} */

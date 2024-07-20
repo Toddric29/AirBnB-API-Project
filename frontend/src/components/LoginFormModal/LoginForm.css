@@ -9,3 +9,35 @@
     text-decoration: underline;
     cursor: pointer;
   }
+
+  label {
+    display: flex;
+    padding-bottom: 5px;
+  }
+
+  input {
+    min-width: 250px;
+  }
+
+  button {
+    display: block;
+    margin: auto;
+  }
+
+  h1 {
+    text-align: center;
+  }
+
+  .Demo-button {
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+  .login-button button:enabled {
+    display: block;
+    margin: auto;
+    background-color:#2512bc;
+    color: #fff;
+    border:none;
+    width: 100px;
+  }

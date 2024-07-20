@@ -9,7 +9,8 @@ function Navigation({ isLoaded }) {
   return (
     <div className='navigation'>
       <span className='logo'>
-      <NavLink to="/"><img src='data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQAB
+      <NavLink to="/"><img className='fake'
+      src='data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQAB
       AAD/2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdHx8kKDQsJCYxJx8fLT0tM
       TU3Ojo6Iys/RD84QzQ5OjcBCgoKDQwNGg8PGjclHyU3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc
       3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3N//AABEIALcAwgMBIgACEQEDEQH/xAAcAAEAAwEBA
@@ -107,12 +108,12 @@ function Navigation({ isLoaded }) {
       EAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREB//9k='/></NavLink>
       </span>
     <span>
-    <ul>
-      {sessionUser != null && <li>
+    <ul className='profile-button'>
+      {sessionUser != null && <li className='create-spot'>
         <NavLink to="/spots/new">Create a Spot</NavLink>
       </li>}
       {isLoaded && (
-        <li>
+        <li className='list'>
           <ProfileButton user={sessionUser} />
         </li>
       )}

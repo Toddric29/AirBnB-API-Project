@@ -17,8 +17,8 @@ function SignupFormModal() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setErrors({});
     if (password === confirmPassword) {
-      setErrors({});
       return dispatch(
         sessionActions.signup({
           email,
@@ -29,11 +29,10 @@ function SignupFormModal() {
         })
       )
         .then(closeModal)
-        .catch(async (res) => {
-          const data = await res.json();
-          if (data?.errors) {
-            setErrors(data.errors);
-          }
+        .catch(async res => {
+          console.log(res)
+          const errors = await res.json();
+            setErrors(errors.errors);
         });
     }
     return setErrors({
@@ -46,9 +45,9 @@ console.log(errors)
       <h1>Sign Up</h1>
       <form onSubmit={handleSubmit}>
         <label>
-          Email
           <input
             type="text"
+            placeholder='Email'
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
@@ -56,9 +55,9 @@ console.log(errors)
         </label>
         {errors.email && <p>{errors.email}</p>}
         <label>
-          Username
           <input
             type="text"
+            placeholder='Username'
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required
@@ -66,9 +65,9 @@ console.log(errors)
         </label>
         {errors.username && <p>{errors.username}</p>}
         <label>
-          First Name
           <input
             type="text"
+            placeholder='First Name'
             value={firstName}
             onChange={(e) => setFirstName(e.target.value)}
             required
@@ -76,9 +75,9 @@ console.log(errors)
         </label>
         {errors.firstName && <p>{errors.firstName}</p>}
         <label>
-          Last Name
           <input
             type="text"
+            placeholder='Last Name'
             value={lastName}
             onChange={(e) => setLastName(e.target.value)}
             required
@@ -86,9 +85,9 @@ console.log(errors)
         </label>
         {errors.lastName && <p>{errors.lastName}</p>}
         <label>
-          Password
           <input
             type="password"
+            placeholder='Password'
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
@@ -96,9 +95,9 @@ console.log(errors)
         </label>
         {errors.password && <p>{errors.password}</p>}
         <label>
-          Confirm Password
           <input
             type="password"
+            placeholder='Confirm Password'
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             required
@@ -107,9 +106,11 @@ console.log(errors)
         {errors.confirmPassword && (
           <p>{errors.confirmPassword}</p>
         )}
+        <div className='submit-button'>
         <button disabled={email.length === 0 || username.length < 4 ||
         password.length < 6 || firstName.length === 0 || lastName.length === 0
         || confirmPassword.length < 6}type="submit">Sign Up</button>
+        </div>
       </form>
     </>
   );

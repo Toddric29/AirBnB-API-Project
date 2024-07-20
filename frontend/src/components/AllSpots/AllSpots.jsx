@@ -12,8 +12,8 @@ const AllSpots = () => {
         dispatch(fetchSpots())
     }, [dispatch])
     return (
-        <main>
-            <nav>
+        <main className='allSpots'>
+            <nav className='spots'>
             {Object.values(spots).map(spot => {
                 let rating = '★ '
                 if (spot.avgRating === null) {
@@ -21,14 +21,19 @@ const AllSpots = () => {
                 }
                 return (
                     <NavLink key={spot.name} to={`/spots/${spot.id}`}>
-                    <div key={spot.id}>
-                    <h3>{spot.name}</h3>
+                    <div  className='spotse' key={spot.id}>
                     <div>
                     <img title={spot.name} src={spot.previewImage}/>
                     </div>
-                    <h4>{`${spot.city}, ${spot.state}`}</h4>
-                    <h4>{rating}{spot.avgRating}</h4>
-                    <h4>{`$${spot.price} night`}</h4>
+                    <div className='description'>
+                        <div className='description-left'>
+                        <h4>{`${spot.city}, ${spot.state}`}</h4>
+                        <h4>{`$${spot.price} night`}</h4>
+                        </div>
+                        <div className='description-right'>
+                        <h4>{rating}{spot.avgRating}</h4>
+                        </div>
+                    </div>
                 </div>
                     </NavLink>
                 )
