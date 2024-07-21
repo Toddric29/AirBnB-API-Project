@@ -47,8 +47,10 @@ const SpotDetails = () => {
     useEffect(() => {
         Promise.all([
         dispatch(fetchSpotDetails(spotId)),
-        dispatch(fetchReviews(spotId)),
-        ]).then(() => setIsLoaded(true))
+        dispatch(fetchReviews(spotId))
+        ])
+        .then(() => setIsLoaded(true))
+
     }, [spotId, dispatch])
 
     let rating = '★ '
@@ -67,7 +69,7 @@ const SpotDetails = () => {
         spot.avgStarRating = 'New'
     }
     if (spot.avgStarRating != 'New') {
-        spot.avgStarRating = `${parseFloat(spot.avgStarRating).toFixed(2)}  · `
+        spot.avgStarRating = `${parseFloat(spot.avgStarRating).toFixed(1)}  · `
     }
     if (spot.numReviews === null) {
         spot.numReviews = ''
@@ -85,36 +87,45 @@ const SpotDetails = () => {
             <h3>{spot.name}</h3>
             <p>{`${spot.city}, ${spot.state}, ${spot.country}`}</p>
             </div>
-            <div>
+            <div className='images'>
+            <div className='preview-images'>
             {previewImage}
             </div>
-            <div>
+            <div className='other'>
             {spotImages && (
                 <div className="other-images-div">
                     {spotImages}
                 </div>
             )}
             </div>
+            </div>
+            <div className='spot-details'>
             <div>
                 <h4>{`Hosted by ${spot.Owner.firstName} ${spot.Owner.lastName}`}</h4>
-            </div>
-            <div>
                 <p>{spot.description}</p>
             </div>
             <div>
-                <div>
-                    <h3>{`$${spot.price} night`}</h3>
-                    <p>{`${rating}${spot.avgStarRating}${spot.numReviews}${reviewText}`}</p>
-                    <button onClick={() => setModalContent(<SpotDetailsModal/>)}>Reserve</button>
-                </div>
             </div>
+            <div>
+                <div>
+                    <span className='price'>{`$${spot.price} night`}</span>
+                    <span>{`${rating}${spot.avgStarRating}${spot.numReviews}${reviewText}`}</span>
+                    <div className='reserve'>
+                    <button  onClick={() => setModalContent(<SpotDetailsModal/>)}>Reserve</button>
+                    </div>
+
+                </div>
+
+            </div>
+            </div>
+
             <div>
                 <div>
                     <h2>{`${rating}${spot.avgStarRating}${spot.numReviews}${reviewText}`}</h2>
                 </div>
             </div>
             <div>
-            {id && <button hidden={id === spot.Owner.id || sessionUser.id === null || alreadyReviewed} onClick={() => setModalContent(<PostReviewModal spotId = {spotId}/>)}>Post Your Review</button>}
+            {id && <button className='review' hidden={id === spot.Owner.id || sessionUser.id === null || alreadyReviewed} onClick={() => setModalContent(<PostReviewModal spotId = {spotId}/>)}>Post Your Review</button>}
             {Object.values(reviews).length === 0 && id != spot.id && id != null && (
                 <p>Be the first to post a review!</p>
             )}

@@ -19,6 +19,9 @@ const AllSpots = () => {
                 if (spot.avgRating === null) {
                     spot.avgRating = 'New'
                 }
+                if (spot.avgRating != 'New') {
+                    spot.avgRating = `${parseFloat(spot.avgRating).toFixed(1)}`
+                }
                 return (
                     <NavLink key={spot.name} to={`/spots/${spot.id}`}>
                     <div  className='spotse' key={spot.id}>

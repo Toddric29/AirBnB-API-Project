@@ -34,8 +34,8 @@ function LoginFormModal() {
     <>
       <h1>Log In</h1>
       <form onSubmit={handleSubmit}>
-        <label>
-          <input
+        <label className='login-form'>
+          <input className='login-input'
             type="text"
             placeholder='Username or Email'
             value={credential}
@@ -43,8 +43,8 @@ function LoginFormModal() {
             required
           />
         </label>
-        <label>
-          <input
+        <label className='login-form'>
+          <input className='login-input'
             type="password"
             placeholder='Password'
             value={password}
@@ -60,8 +60,8 @@ function LoginFormModal() {
         )}
       </form>
       <form onSubmit={handleDemo}>
-        <div className='Demo-button'>
-          <button className='Demo'type="submit">Demo User</button>
+        <div className='demo-button'>
+          <button className='demo'type="submit">Demo User</button>
         </div>
       </form>
     </>

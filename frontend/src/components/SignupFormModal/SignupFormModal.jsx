@@ -30,8 +30,8 @@ function SignupFormModal() {
       )
         .then(closeModal)
         .catch(async res => {
-          console.log(res)
           const errors = await res.json();
+          console.log(res)
             setErrors(errors.errors);
         });
     }
@@ -44,8 +44,8 @@ console.log(errors)
     <>
       <h1>Sign Up</h1>
       <form onSubmit={handleSubmit}>
-        <label>
-          <input
+        <label className='signup-form'>
+          <input className='signup-input'
             type="text"
             placeholder='Email'
             value={email}
@@ -54,8 +54,8 @@ console.log(errors)
           />
         </label>
         {errors.email && <p>{errors.email}</p>}
-        <label>
-          <input
+        <label className='signup-form'>
+          <input className='signup-input'
             type="text"
             placeholder='Username'
             value={username}
@@ -64,8 +64,8 @@ console.log(errors)
           />
         </label>
         {errors.username && <p>{errors.username}</p>}
-        <label>
-          <input
+        <label className='signup-form'>
+          <input className='signup-input'
             type="text"
             placeholder='First Name'
             value={firstName}
@@ -74,8 +74,8 @@ console.log(errors)
           />
         </label>
         {errors.firstName && <p>{errors.firstName}</p>}
-        <label>
-          <input
+        <label className='signup-form'>
+          <input className='signup-input'
             type="text"
             placeholder='Last Name'
             value={lastName}
@@ -84,8 +84,8 @@ console.log(errors)
           />
         </label>
         {errors.lastName && <p>{errors.lastName}</p>}
-        <label>
-          <input
+        <label className='signup-form'>
+          <input className='signup-input'
             type="password"
             placeholder='Password'
             value={password}
@@ -94,8 +94,8 @@ console.log(errors)
           />
         </label>
         {errors.password && <p>{errors.password}</p>}
-        <label>
-          <input
+        <label className='signup-form'>
+          <input className='signup-input'
             type="password"
             placeholder='Confirm Password'
             value={confirmPassword}
@@ -107,7 +107,7 @@ console.log(errors)
           <p>{errors.confirmPassword}</p>
         )}
         <div className='submit-button'>
-        <button disabled={email.length === 0 || username.length < 4 ||
+        <button className='submit' disabled={email.length === 0 || username.length < 4 ||
         password.length < 6 || firstName.length === 0 || lastName.length === 0
         || confirmPassword.length < 6}type="submit">Sign Up</button>
         </div>

@@ -10,16 +10,21 @@
     cursor: pointer;
   }
 
-  label {
+  .login-form {
     display: flex;
     padding-bottom: 5px;
   }
 
-  input {
+  .login-input {
     min-width: 250px;
   }
 
-  button {
+  .login {
+    display: block;
+    margin: auto;
+  }
+
+  .demo {
     display: block;
     margin: auto;
   }
@@ -28,10 +33,13 @@
     text-align: center;
   }
 
-  .Demo-button {
+  .demo-button {
+    display: block;
+    margin: auto;
     padding-top: 10px;
     padding-bottom: 10px;
   }
+
 
   .login-button button:enabled {
     display: block;

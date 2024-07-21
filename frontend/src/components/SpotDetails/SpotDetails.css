@@ -1,6 +1,68 @@
 img {
     border: 1px solid #ddd;
-    border-radius: 4px;
     padding: 5px;
     width: 250px;
   }
+
+.images {
+  display: grid;
+  height: 400px;
+  width: 1000px;
+  grid-template-columns: 2fr 1fr 1fr;
+  ;
+}
+.other-images-div {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+}
+div.preview-images,
+.other {
+  height: 400px;
+  width: 500px;
+  overflow: hidden;
+}
+
+.preview-image {
+  width: 500px;
+  height: 375px;
+}
+
+.other-images {
+  width: 250;
+  padding: none;
+}
+
+.spot-details {
+  display: grid;
+  width: 1000px;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr;
+  grid-template-areas:
+  "a b c"
+
+  ;
+}
+
+.reserve {
+  text-align: center;
+}
+
+.reserve button {
+  display: block;
+  margin: auto;
+  background-color:#2512bc;
+  color: #fff;
+  border:none;
+  width: 100px;
+}
+.review:enabled {
+  display: block;
+  background-color:#2512bc;
+  color: #fff;
+  border:none;
+  width: fit-content;
+}
+.price {
+  padding-right: 5px;
+}
