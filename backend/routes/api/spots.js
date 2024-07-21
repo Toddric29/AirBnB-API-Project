@@ -57,7 +57,7 @@ const validateSpot = [
       check('stars')
       .exists({ checkFalsy: true })
       .isInt({gt: 0, lt: 5.1})
-      .withMessage('Stars must be an integer from 1 to 5'),
+      .withMessage('Please enter a star rating, ranging from 1 star to 5 stars'),
       handleValidationErrors
   ];
 

@@ -11,7 +11,7 @@ if (process.env.NODE_ENV === 'production') {
 const spotImages = [
   {
     url: ['https://listing-images.homejunction.com/heartland/HMS44887495/photo_2.jpg',
-          'https://listing-images.homejunction.com/heartland/HMS44887495/photo_2.jpg',
+          'https://listing-images.homejunction.com/heartland/HMS44887495/photo_6.jpg',
           'https://listing-images.homejunction.com/heartland/HMS44887495/photo_3.jpg',
           'https://listing-images.homejunction.com/heartland/HMS44887495/photo_4.jpg',
           'https://listing-images.homejunction.com/heartland/HMS44887495/photo_5.jpg'],
