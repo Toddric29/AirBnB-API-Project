@@ -120,7 +120,16 @@ router.get('/', async (req, res, next) => {
         const jsonSpot = spot.toJSON();
         if (jsonSpot.Reviews[0]) {
           parseInt(jsonSpot.price, jsonSpot.lat, jsonSpot.lng)
-          jsonSpot.avgRating = parseFloat(jsonSpot.Reviews[0].avgRating);
+          const [sum, count] = jsonSpot.Reviews.reduce(
+            (accumulator, review) => {
+              accumulator[0] += review.avgRating;
+              accumulator[1]++;
+
+              return accumulator;
+            },
+            [0, 0]
+          );
+          jsonSpot.avgRating = sum / count
         } else {
           jsonSpot.avgRating = null;
         }
