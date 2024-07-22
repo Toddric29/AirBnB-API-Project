@@ -11,13 +11,13 @@ function DeleteSpotModal({spotId}) {
     const handleSubmit = () => {
         dispatch(spotActions.deleteSpot(spotId))
         .then(() => {
+            dispatch(spotActions.fetchSpots(spotId))
+        })
+        .then(() => {
             dispatch(spotActions.fetchMySpots())
         })
         .then(() => {
             closeModal()
-        })
-        .then(() => {
-            dispatch(spotActions.fetchSpots(spotId))
         })
     }
     const handleCancel = () => {
