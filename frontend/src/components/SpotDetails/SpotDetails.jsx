@@ -107,7 +107,7 @@ const SpotDetails = () => {
             <div>
             </div>
             <div>
-                <div>
+                <div className='price-div'>
                     <span className='price'>{`$${spot.price} night`}</span>
                     <span>{`${rating}${spot.avgStarRating}${spot.numReviews}${reviewText}`}</span>
                     <div className='reserve'>
@@ -119,7 +119,7 @@ const SpotDetails = () => {
             </div>
             </div>
 
-            <div>
+            <div className='review-section'>
                 <div>
                     <h2>{`${rating}${spot.avgStarRating}${spot.numReviews}${reviewText}`}</h2>
                 </div>

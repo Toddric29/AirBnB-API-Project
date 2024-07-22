@@ -123,106 +123,145 @@ const CreateSpotForm = ({ spot }) => {
 
   return (
     <section className="new-form-holder centered middled">
-        <h1>Create a Spot</h1>
-        <h2>Where&apos;s your place located?</h2>
-        <h3>Guests will only get your exact address once they
+        <h1 style={{paddingRight: 400}}>Create a Spot</h1>
+        <h2 style={{textAlign: 'center', paddingRight: 250}}>Where&apos;s your place located?</h2>
+        <h3 style={{textAlign: 'center', paddingLeft: 30}}>Guests will only get your exact address once they
             booked a reservation.</h3>
       <form className="create-spot-form" onSubmit={handleSubmit}>
+        <div className='location'>
+        <div>
+          <p>Country</p>
         <input
           type="text"
           placeholder="Country"
           value={country}
           onChange={updateCountry} />
           {errors.country && (<p>{errors.country}</p>)}
+        </div>
+        <p>Address</p>
+        <div>
         <input
           type="text"
           placeholder="Address"
           value={address}
           onChange={updateAddress} />
           {errors.address && (<p>{errors.address}</p>)}
+        </div>
+        <span>City</span> <span className='state'>State</span>
+        <div className='city-state'>
+        <span>
         <input
           type="text"
           placeholder="City"
           value={city}
           onChange={updateCity} />
           {errors.city && (<p>{errors.city}</p>)}
+        </span>
+        ,
+        <span>
         <input
           type="text"
           placeholder="State"
           value={state}
           onChange={updateState} />
           {errors.state && (<p>{errors.state}</p>)}
+        </span>
+        </div>
+        <span>Latitude</span><span className='longitude'>Longitude</span>
+        <div className='lat-lng'>
         <input
           type="number"
           placeholder="Lat"
           value={lat}
           onChange={updateLat} />
           {errors.lat && (<p>{errors.lat}</p>)}
-          <input
+          ,
+        <input
           type="number"
           placeholder="Lng"
           value={lng}
           onChange={updateLng} />
           {errors.lng && (<p>{errors.lng}</p>)}
-          <h2>Describe your place to guests</h2>
-          <h3>Mention the best features of your
+        </div>
+        </div>
+          <h2 style={{textAlign: 'center', paddingRight: 225}}>Describe your place to guests</h2>
+          <h4 style={{textAlign: 'center', paddingLeft: 370}}>Mention the best features of your
             space, any special amentities like
             fast wifi or parking, and what you
-             love about the neighborhood.</h3>
+             love about the neighborhood.</h4>
+        <div style={{paddingLeft: 450}}>
         <input
           type="text"
           placeholder="Please write at least 30 characters"
           value={description}
           onChange={updateDescription} />
           {errors.description && (<p>{errors.description}</p>)}
-          <h2>Create a title for your spot</h2>
-          <h3>Catch guests&apos; attention with a spot title that
+        </div>
+          <h2 style={{textAlign: 'center', paddingRight: 250}}>Create a title for your spot</h2>
+          <h3 style={{textAlign: 'center', paddingLeft: 160}}>Catch guests&apos; attention with a spot title that
             highlights what makes your place special.</h3>
+        <div style={{paddingLeft: 450}}>
         <input
           type="text"
           placeholder="Name of your spot"
           value={name}
           onChange={updateName} />
           {errors.name && (<p>{errors.name}</p>)}
-          <h2>Set a base price for your spot</h2>
-          <h3>Competitive pricing can help your listing stand out
+        </div>
+          <h2 style={{textAlign: 'center', paddingRight: 225}}>Set a base price for your spot</h2>
+          <h3 style={{textAlign: 'center', paddingLeft: 155}}>Competitive pricing can help your listing stand out
              and rank higher in search results.</h3>
+        <div style={{paddingLeft: 450}}>
+          $
         <input
           type="number"
           placeholder="Price per night (USD)"
           value={price}
           onChange={updatePrice} />
           {errors.price && (<p>{errors.price}</p>)}
-          <h2>Liven up your spot with photos</h2>
-          <h3>Submit a link to at least one photo to publish your spot.</h3>
+        </div>
+          <h2 style={{textAlign: 'center', paddingRight: 200}}>Liven up your spot with photos</h2>
+          <h3 style={{textAlign: 'center', paddingRight: 80}}>Submit a link to at least one photo to publish your spot.</h3>
+        <div style={{paddingLeft: 450}}>
         <input
           type="text"
           placeholder="Preview Image"
           value={previewImage}
           onChange={updatePreviewImage} />
           {errors.previewImage && (<p>{errors.previewImage}</p>)}
-          <input
+        </div>
+        <div style={{paddingLeft: 450, paddingTop: 12}}>
+        <input
           type="text"
           placeholder="Image URL"
           value={imageTwo}
           onChange={updateImageTwo} />
-          <input
+        </div>
+        <div style={{paddingLeft: 450, paddingTop: 12}}>
+        <input
           type="text"
           placeholder="Image URL"
           value={imageThree}
           onChange={updateImageThree} />
-          <input
+        </div>
+        <div style={{paddingLeft: 450, paddingTop: 12}}>
+        <input
           type="text"
           placeholder="Image URL"
           value={imageFour}
           onChange={updateImageFour} />
-          <input
+        </div>
+        <div style={{paddingLeft: 450, paddingTop: 12, paddingBottom: 12}}>
+        <input
           type="text"
           placeholder="Image URL"
           value={imageFive}
           onChange={updateImageFive} />
+        </div>
+        <span style={{paddingLeft: 450}}>
         <button type="submit">Create new Spot</button>
         <button type="button" onClick={handleCancelClick}>Cancel</button>
+        </span>
       </form>
     </section>
   );

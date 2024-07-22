@@ -46,8 +46,7 @@ const PostReviewModal= ({spotId}) => {
           <form onSubmit={handleSubmit}>
             <h1>How was your stay?</h1>
             <label>
-              Review
-              <input
+              <input style={{height: 100, width: 300}}
                 type="text"
                 placeholder="Leave your review here..."
                 value={review}
@@ -79,7 +78,9 @@ const PostReviewModal= ({spotId}) => {
                 <label>Stars</label>
                 {errors.stars && <p>{errors.stars}</p>}
                 </div>
-            <button disabled={review.length < 10}type="submit">Submit Your Review</button>
+            <div style={{textAlign:'center'}}>
+            <button className='post-review' disabled={review.length < 10}type="submit">Submit Your Review</button>
+            </div>
           </form>
         </>
       );

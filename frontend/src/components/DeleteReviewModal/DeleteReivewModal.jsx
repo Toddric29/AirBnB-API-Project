@@ -32,10 +32,18 @@ function DeleteReviewModal({reviewId, spotId}) {
     return (
         <>
         <h1>Confirm Delete</h1>
-        <h2>Are you sure you want to rdelete this review?</h2>
+        <h2>Are you sure you want to delete this review?</h2>
         <form>
-        <button type="button" onClick={handleSubmit}>Yes (Delete Review)</button>
-        <button type="button" onClick={handleCancel}>No (Keep Review)</button>
+        <div style={{textAlign:'center'}}>
+        <div>
+        <button style={{backgroundColor:'red', color:'#fff',border:'none', width:150}}
+        type="button" onClick={handleSubmit}>Yes (Delete Review)</button>
+        </div>
+        <div>
+        <button style={{backgroundColor:'grey', color:'#fff',border:'none', width:150}}
+        type="button" onClick={handleCancel}>No (Keep Review)</button>
+        </div>
+        </div>
         </form>
         </>
     )

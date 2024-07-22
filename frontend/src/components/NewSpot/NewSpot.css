@@ -1,0 +1,25 @@
+.city-state {
+    display: flex;
+    flex-direction: row;
+    padding-top: 12px;
+    padding-bottom: 12px;
+}
+
+.state {
+    padding-left: 120px;
+}
+
+.lat-lng {
+    display: flex;
+    flex-direction: row;
+    padding-top: 12px;
+    padding-bottom: 12px;
+}
+
+.longitude {
+    padding-left: 100px;
+}
+
+.location {
+    padding-left: 450px;
+}

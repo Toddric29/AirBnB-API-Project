@@ -46,9 +46,9 @@ const MySpots = () => {
     // }
 
     return (
-        <main>
+        <main className='allSpots'>
             <h1>Manage Your Spots</h1>
-            <div>
+            <nav className='spots'>
             {Object.values(spots).length === 0 &&
             <NavLink to="/spots/new">Create a Spot</NavLink>}
             {Object.values(spots).map(spot => {
@@ -57,19 +57,27 @@ const MySpots = () => {
                     spot.avgRating = 'New'
                 }
                 return (
-                    <div key={spot.city}>
+                    <div style={{width: 260}}key={spot.city}>
                     <NavLink key={spot.name} to={`/spots/${spot.id}`}>
-                    <div key={spot.id}>
-                    <h3>{spot.name}</h3>
+                    <div className='spotse' key={spot.id}>
+                    <div>
                     <img src={spot.previewImage}/>
-                    <h4>{`${spot.city}, ${spot.state}`}</h4>
-                    <h4>{rating}{spot.avgRating}</h4>
-                    <h4>{`$${spot.price} night`}</h4>
+                    </div>
+                    <div className='description'>
+                        <div className='description-left'>
+                        <h4>{`${spot.city}, ${spot.state}`}</h4>
+                        <h4>{`$${spot.price} night`}</h4>
+                        </div>
+                        <div className='description-right'>
+                        <h5 >{rating}{spot.avgRating}</h5>
+                        </div>
+                    </div>
                 </div>
                     </NavLink>
                     <div key={spot.id}>
-                    <button onClick={() => editSpots(spot.id)}>Update</button>
+                    <button className='manage-buttons'onClick={() => editSpots(spot.id)}>Update</button>
                     <OpenModalButton
+                        className='manage-buttons'
                         buttonText="Delete"
                         onItemClick={closeMenu}
                         modalComponent={<DeleteSpotModal spotId={spot.id}/>}
@@ -78,7 +86,7 @@ const MySpots = () => {
                     </ div>
                 )
                 })}
-            </div>
+            </nav>
         </main>
     )
 }
